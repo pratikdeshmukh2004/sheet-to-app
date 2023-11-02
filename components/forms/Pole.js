@@ -144,7 +144,7 @@ const Pole = ({ isEditing = null }) => {
       prefilled["Switch No."] = params.get("switch");
     }
     setValues(prefilled);
-  }, [poles]);
+  }, []);
 
   useEffect(() => {
     console.log(values, "here.....");
@@ -187,10 +187,47 @@ const Pole = ({ isEditing = null }) => {
   const createNewPole = async (e) => {
     e.preventDefault();
     console.log(values, "pole....");
-
-    if (Object.keys(values).length !== Object.keys(form).length) {
+    const list_of_form_fittings = form
+      .filter((item) => item.label.includes("Type Of Fitting"))
+      .map((item) => item.label);
+    const list_of_form_wattage = form
+      .filter((item) => item.label.includes("Wattage"))
+      .map((item) => item.label);
+    const new_values = {};
+    Object.keys(values).map((item) => {
+      if (item.includes("Type Of Fitting") || item.includes("Wattage")) {
+        if (
+          list_of_form_fittings.includes(item) ||
+          list_of_form_wattage.includes(item)
+        ) {
+          new_values[item] = values[item];
+        }
+      } else {
+        new_values[item] = values[item];
+      }
+    });
+    if (
+      poles.filter(
+        (item) =>
+          item.get("Pole No.") == values["Pole No."] &&
+          item.get("Switch No.") == values["Switch No."] &&
+          item.get("Area Code") == values["Area Code"]
+      ).length > 0
+    ) {
+      return toast.warning("Pole No. already exists.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
+    }
+    if (Object.keys(new_values).length == 0) return;
+    if (Object.keys(new_values).length !== Object.keys(form).length) {
       console.log("Please fill all the fields....");
-      toast.warning("Please fill all the fields.", {
+      return toast.warning("Please fill all the fields.", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -200,10 +237,9 @@ const Pole = ({ isEditing = null }) => {
         progress: undefined,
         theme: "light",
       });
-      return;
     }
     setLoading(true);
-    doc.sheetsByIndex[1].addRow(values).then((data) => {
+    doc.sheetsByIndex[1].addRow(new_values).then((data) => {
       console.log("data...", data);
       toast.success("Pole created successfully.", {
         position: "top-right",
@@ -217,15 +253,36 @@ const Pole = ({ isEditing = null }) => {
       setValues({});
       loadPoles();
       setLoading(false);
-      router.push(
-        `/switch?area=${values["Area Code"]}&switch=${values["Switch No."]}`
-      );
+      router.back();
     });
   };
 
   const updatePole = (e) => {
     e.preventDefault();
-    if (Object.keys(values).length !== Object.keys(form).length) {
+    const list_of_form_fittings = form
+      .filter((item) => item.label.includes("Type Of Fitting"))
+      .map((item) => item.label);
+    const list_of_form_wattage = form
+      .filter((item) => item.label.includes("Wattage"))
+      .map((item) => item.label);
+    const new_values = {};
+    Object.keys(values).map((item) => {
+      if (item.includes("Type Of Fitting") || item.includes("Wattage")) {
+        if (
+          list_of_form_fittings.includes(item) ||
+          list_of_form_wattage.includes(item)
+        ) {
+          new_values[item] = values[item];
+        }
+      } else {
+        new_values[item] = values[item];
+      }
+    });
+    if (
+      Object.keys(new_values).length !== Object.keys(form).length &&
+      Object.keys(new_values).length !== Object.keys(form).length - 1 &&
+      values?.Remarks == ""
+    ) {
       console.log("Please fill all the fields....");
       toast.warning("Please fill all the fields.", {
         position: "top-right",
@@ -241,7 +298,11 @@ const Pole = ({ isEditing = null }) => {
     }
     setLoading(true);
     const row = poles?.find((row) => row._rowNumber == params.get("pole"));
-    row.assign(values);
+    console.log(new_values, "values...");
+    Object.keys(row.toObject()).map((item) => {
+      row.assign({ [item]: "" });
+    });
+    row.assign(new_values);
     row.save().then((data) => {
       loadPoles();
       toast.success("Pole updated successfully.", {
@@ -253,9 +314,7 @@ const Pole = ({ isEditing = null }) => {
         draggable: true,
         theme: "light",
       });
-      router.push(
-        `/switch?area=${values["Area Code"]}&switch=${values["Switch No."]}`
-      );
+      router.back();
     });
   };
 
@@ -301,19 +360,13 @@ const Pole = ({ isEditing = null }) => {
         >
           {loading ? "Saving..." : isEditing ? "Update" : "Submit"}
         </button>
-        <Link
-          href={
-            isEditing
-              ? `/switch?area=${values["Area Code"]}&switch=${values["Switch No."]}`
-              : `/switch?area=${params.get("area")}&switch=${params.get(
-                  "switch"
-                )}`
-          }
+
+        <button
+          onClick={() => router.back()}
+          className="border border-gray-400 py-2 text-md text-gray-800 font-bold rounded-lg px-5"
         >
-          <button className="border border-gray-400 py-2 text-md text-gray-800 font-bold rounded-lg px-5">
-            Cancel
-          </button>
-        </Link>
+          Cancel
+        </button>
       </div>
     </div>
   );
