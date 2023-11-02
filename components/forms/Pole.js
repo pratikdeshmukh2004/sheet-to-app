@@ -13,6 +13,7 @@ const Pole = ({ isEditing = null }) => {
   const params = useSearchParams();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [positoin, setPosition] = useState({ lat: "", long: "" });
   const [form, setForm] = useState([
     {
       type: "select",
@@ -107,6 +108,26 @@ const Pole = ({ isEditing = null }) => {
     },
   ]);
 
+  useEffect(
+    (lat, long) => {
+      setValues({
+        ...values,
+        Lattitude: positoin.lat,
+        Longitude: positoin.long,
+      });
+    },
+    [positoin]
+  );
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setPosition({
+        lat: position.coords.latitude,
+        long: position.coords.longitude,
+      });
+    });
+  }, [navigator]);
+
   useEffect(() => {
     let prefilled = {};
     if (isEditing) {
@@ -122,13 +143,7 @@ const Pole = ({ isEditing = null }) => {
       prefilled["Area Code"] = params.get("area");
       prefilled["Switch No."] = params.get("switch");
     }
-    navigator.geolocation.getCurrentPosition(function (position) {
-      setValues({
-        ...prefilled,
-        Lattitude: position.coords.latitude,
-        Longitude: position.coords.longitude,
-      });
-    });
+    setValues(prefilled);
   }, [poles]);
 
   useEffect(() => {
