@@ -70,7 +70,7 @@ export default function Pole() {
             href={`/pole/new?area=${params.get("area")}&switch=${params.get(
               "switch"
             )}`}
-            className="bg-orange-600 flex items-center lg:py-0 text-md text-white font-bold rounded-lg px-3"
+            className="bg-orange-600 py-3 text-center justify-center flex items-center lg:py-0 text-md text-white font-bold rounded-lg px-3"
           >
             <FontAwesomeIcon className="mr-2" icon={faPlus} />
             New Pole
@@ -83,7 +83,7 @@ export default function Pole() {
         </div>
       )}
 
-      <ul className="mx-5 my-8 grid grid-cols-2 gap-5 lg:grid-cols-3 text-md cursor-pointer lg:text-lg text-gray-600 font-bold lg:mx-[27%]">
+      <ul className="mx-5 my-8 grid grid-cols-2 gap-5 lg:grid-cols-4 text-md cursor-pointer lg:text-lg text-gray-600 font-bold lg:mx-[27%]">
         {poles &&
           poles
             ?.filter((row) =>
@@ -101,7 +101,7 @@ export default function Pole() {
                       "area"
                     )}&switch=${params.get("switch")}`}
                   >
-                    <li className="shadow p-3 hover:bg-gray-100 rounded-t-lg border-gray-300 py-3 flex items-center">
+                    <li className="border p-3 hover:bg-gray-100 rounded-lg border-gray-300 py-3 flex items-center">
                       <div>
                         <h4 className="ml-2">{row.get("Pole No.")}</h4>
                         <p className="text-sm text-gray-500 font-medium ml-2">

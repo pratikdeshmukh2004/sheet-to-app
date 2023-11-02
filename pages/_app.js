@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { JWT } from "google-auth-library";
 import DataContext from "@/Context/dataContext";
-import Lottie from "react-lottie";
-import animationData from "../animations/loading_dot.json";
+import Loader from "@/components/loader";
 export default function App({ Component, pageProps }) {
   const [doc, setDoc] = useState(null);
   const [areaCodes, setAreaCodes] = useState(null);
@@ -33,31 +32,22 @@ export default function App({ Component, pageProps }) {
     });
   };
 
+  const loadPoles = async () => {
+    doc.sheetsByIndex[1].getRows().then((data) => {
+      setPoles(data);
+    });
+  };
+
   useEffect(() => {
     loadDoc();
   }, []);
 
-  if (!doc)
-    return (
-      <div className="flex justify-center items-center w-full h-full absolute">
-        <Lottie
-        style={{width: '400px', height: '400px'}}
-          options={{
-            loop: true,
-            autoplay: true,
-            animationData: animationData,
-            rendererSettings: {
-              preserveAspectRatio: "xMidYMid slice",
-            },
-          }}
-        />
-      </div>
-    );
+  if (!doc) return <Loader />;
 
   return (
     <sheetApiContext.Provider value={{ doc, setDoc }}>
       <DataContext.Provider
-        value={{ areaCodes, poles, setPoles, setAreaCodes }}
+        value={{ areaCodes, poles, setPoles, setAreaCodes, loadPoles }}
       >
         <Component {...pageProps} />
       </DataContext.Provider>

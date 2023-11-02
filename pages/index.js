@@ -35,15 +35,15 @@ export default function Home() {
           areaCodes?.map(
             (row) =>
               row.get("Area Code") && (
-                // <Link href={`/area?area=${row.get("Area Code")}`}>
-                <li className="border-b hover:bg-gray-100 rounded-t-lg border-gray-300 py-3 flex">
-                  <h4 className="ml-2">{row.get("Area Code")}</h4>
-                  <FontAwesomeIcon
-                    className="ml-auto text-sm mt-2 mr-5"
-                    icon={faChevronRight}
-                  />
-                </li>
-                // </Link>
+                <Link href={`/area?area=${row.get("Area Code")}`}>
+                  <li className="border-b hover:bg-gray-100 rounded-t-lg border-gray-300 py-3 flex">
+                    <h4 className="ml-2">{row.get("Area Code")}</h4>
+                    <FontAwesomeIcon
+                      className="ml-auto text-sm mt-2 mr-5"
+                      icon={faChevronRight}
+                    />
+                  </li>
+                </Link>
               )
           )}
         {areaCodes == null &&
