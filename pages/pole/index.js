@@ -18,7 +18,7 @@ export default function Pole() {
   const { poles, loadPoles } = useContext(DataContext);
   const [loading, setLoading] = useState(false);
   const params = useSearchParams();
-  const row = poles?.find((row) => row.get("Area Code") == params.get("area"));
+  const row = poles?.find((row) => row._rowNumber == params.get("pole"));
   const router = useRouter();
   console.log(row);
 
@@ -28,9 +28,7 @@ export default function Pole() {
       console.log(row, "deleted....");
       loadPoles();
       setLoading(false);
-      router.push(
-        "/switch?area=" + params.get("area") + "&switch=" + params.get("switch")
-      );
+      router.push("/switch?area=" + row.get("Area Code") + "&switch=" + row.get("Switch No."));
     });
   };
 
@@ -61,9 +59,9 @@ export default function Pole() {
           />
           <Link
             className="hover:text-blue-500"
-            href={`/area?area=${params.get("area")}`}
+            href={`/area?area=${row?.get("Area Code")}`}
           >
-            {params.get("area")}
+            {row?.get("Area Code")}
           </Link>
           <FontAwesomeIcon
             className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
@@ -71,11 +69,9 @@ export default function Pole() {
           />
           <Link
             className="hover:text-blue-500"
-            href={`/switch?area=${params.get("area")}&switch=${params.get(
-              "switch"
-            )}`}
+            href={`/switch?area=${row?.get("Area Code")}&switch=${row?.get("Switch No.")}`}
           >
-            {params.get("switch")}
+            {row?.get("Switch No.")}
           </Link>
           <FontAwesomeIcon
             className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
@@ -85,10 +81,15 @@ export default function Pole() {
         </h4>
         <div className="py-10 flex gap-5 border-b border-gray-200">
           <h4 className="text-2xl font-bold">{params.get("pole")}</h4>
-          <button className="bg-orange-600 ml-auto py-2 text-md text-white font-bold rounded-lg px-3">
-            <FontAwesomeIcon className="mr-2" icon={faPencil} />
-            Edit
-          </button>
+          <Link
+            className="bg-orange-600 ml-auto py-2 text-md text-white font-bold rounded-lg px-3"
+            href={`/pole/edit?pole=${params.get("pole")}`}
+          >
+            <button>
+              <FontAwesomeIcon className="mr-2" icon={faPencil} />
+              Edit
+            </button>
+          </Link>
           <button
             onClick={() => handleDelete(row)}
             className="border border-gray-300 py-2 text-md text-gray-600 font-bold rounded-lg px-3"
@@ -102,7 +103,7 @@ export default function Pole() {
             Object.keys(row.toObject())?.map(
               (col) =>
                 row.get(col) && (
-                  <div className="flex justify-between lg:flex-col flex-row border-b py-3 border-gray-200">
+                  <div className="flex justify-between lg:flex-col flex-row lg:border-none border-b py-3 border-gray-200">
                     <h4 className="text-gray-600 font-medium">{col}</h4>
                     <h4 className="text-gray-800 font-medium">
                       {row.get(col)}

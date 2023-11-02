@@ -1,10 +1,12 @@
 import "@/styles/globals.css";
+import 'react-toastify/dist/ReactToastify.css';
 import sheetApiContext from "../Context/sheetApiContext";
 import { useEffect, useState } from "react";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { JWT } from "google-auth-library";
 import DataContext from "@/Context/dataContext";
 import Loader from "@/components/loader";
+import { ToastContainer } from "react-toastify";
 export default function App({ Component, pageProps }) {
   const [doc, setDoc] = useState(null);
   const [areaCodes, setAreaCodes] = useState(null);
@@ -26,9 +28,11 @@ export default function App({ Component, pageProps }) {
     setDoc(doc);
     doc.sheetsByIndex[0].getRows().then((data) => {
       setAreaCodes(data);
+      console.log("Datasheet loaded: ", data);
     });
     doc.sheetsByIndex[1].getRows().then((data) => {
       setPoles(data);
+      console.log("Poles loaded: ", data);
     });
   };
 
@@ -43,12 +47,13 @@ export default function App({ Component, pageProps }) {
   }, []);
 
   if (!doc) return <Loader />;
-
+  
   return (
     <sheetApiContext.Provider value={{ doc, setDoc }}>
       <DataContext.Provider
-        value={{ areaCodes, poles, setPoles, setAreaCodes, loadPoles }}
+        value={{ areaCodes, poles, setPoles, setAreaCodes, loadPoles, doc }}
       >
+        <ToastContainer />
         <Component {...pageProps} />
       </DataContext.Provider>
     </sheetApiContext.Provider>

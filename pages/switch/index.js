@@ -84,6 +84,14 @@ export default function Pole() {
       )}
 
       <ul className="mx-5 my-8 grid grid-cols-2 gap-5 lg:grid-cols-4 text-md cursor-pointer lg:text-lg text-gray-600 font-bold lg:mx-[27%]">
+        {poles == null &&
+          [
+            1, 2, 3, 4
+          ].map((item) => {
+            return (
+              <li className="bg-gray-200 animate-pulse py-8 rounded border border-gray-400"></li>
+            );
+          })}
         {poles &&
           poles
             ?.filter((row) =>
@@ -97,9 +105,7 @@ export default function Pole() {
                 row.get("Area Code") == params.get("area") &&
                 row.get("Switch No.") == params.get("switch") && (
                   <Link
-                    href={`/pole?pole=${row.get("Pole No.")}&area=${params.get(
-                      "area"
-                    )}&switch=${params.get("switch")}`}
+                    href={`/pole?pole=${row._rowNumber}`}
                   >
                     <li className="border p-3 hover:bg-gray-100 rounded-lg border-gray-300 py-3 flex items-center">
                       <div>
@@ -112,14 +118,6 @@ export default function Pole() {
                   </Link>
                 )
             )}
-        {poles == null &&
-          [
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-          ].map((item) => {
-            return (
-              <li className="bg-gray-200 animate-pulse py-5 rounded my-2"></li>
-            );
-          })}
       </ul>
     </>
   );
