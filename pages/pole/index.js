@@ -34,23 +34,27 @@ export default function Pole() {
       <div className="mx-5 lg:mx-[27%] mt-3">
         <h4 className="text-gray-600 text-sm">
           <Link className="hover:text-blue-500" href={"/"}>
-            Area Code
+            DISTRICT
           </Link>
           <FontAwesomeIcon
             className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
             icon={faChevronRight}
           />
-          <Link
-            className="hover:text-blue-500"
-            href={`/area?area=${params.get("area")}`}
-          >
-            {params.get("area")}
+           <Link className="hover:text-blue-500" href={`/ulb?district=${params.get("district")}`}>
+            {params.get("district")}
           </Link>
           <FontAwesomeIcon
             className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
             icon={faChevronRight}
           />
-          <b>{params.get("switch")}</b>
+           <Link className="hover:text-blue-500" href={`/ward?district=${params.get("ulb")}&ulb=${params.get("ulb")}`}>
+            {params.get("ulb")}
+          </Link>
+          <FontAwesomeIcon
+            className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
+            icon={faChevronRight}
+          />
+          <b>{params.get("ward")}</b>
         </h4>
         <div className="py-5 lg:flex grid-cols-1 gap-5 grid">
           <h4 className="text-2xl font-bold">{params.get("switch")}</h4>
@@ -96,22 +100,22 @@ export default function Pole() {
           poles
             ?.filter((row) =>
               row
-                .get("Pole No.")
+                .get("Pole Land Mark/ Location")
                 ?.toLowerCase()
                 ?.includes(search.toLocaleLowerCase())
             )
             ?.map(
               (row) =>
-                row.get("Area Code") == params.get("area") &&
-                row.get("Switch No.") == params.get("switch") && (
+                row.get("District") == params.get("district") &&
+                row.get("ULB Name") == params.get("ulb") && (
                   <Link
-                    href={`/pole?pole=${row._rowNumber}`}
+                    href={`/pole/detail?pole=${row._rowNumber}`}
                   >
                     <li className="border p-3 hover:bg-gray-100 rounded-lg border-gray-300 py-3 flex items-center">
                       <div>
-                        <h4 className="ml-2">{row.get("Pole No.")}</h4>
+                        <h4 className="ml-2">{row.get("Pole Land Mark/ Location")}</h4>
                         <p className="text-sm text-gray-500 font-medium ml-2">
-                          {row.get("Road/Street Name")}
+                          {row.get("Pole type")}
                         </p>
                       </div>
                     </li>
