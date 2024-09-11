@@ -44,12 +44,12 @@ const Pole = ({ isEditing = null }) => {
       label: "Ward No.",
     },
     {
-      type: "number",
-      label: "Pole No.",
+      type: "text",
+      label: "Pole Land Mark/ Location ",
     },
     {
       type: "text",
-      label: "Road/Street Name",
+      label: "Pole arrangement",
     },
     {
       type: "select",
