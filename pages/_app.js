@@ -9,7 +9,7 @@ import Loader from "@/components/loader";
 import { ToastContainer } from "react-toastify";
 export default function App({ Component, pageProps }) {
   const [doc, setDoc] = useState(null);
-  const [areaCodes, setAreaCodes] = useState(null);
+  const [dataSheet, setDataSheet] = useState(null);
   const [poles, setPoles] = useState(null);
 
   const loadDoc = async () => {
@@ -27,7 +27,7 @@ export default function App({ Component, pageProps }) {
     await doc.loadInfo();
     setDoc(doc);
     doc.sheetsByIndex[1].getRows().then((data) => {
-      setAreaCodes(data);
+      setDataSheet(data);
       console.log("Datasheet loaded: ", data);
     });
     doc.sheetsByIndex[1].getRows().then((data) => {
@@ -51,7 +51,7 @@ export default function App({ Component, pageProps }) {
   return (
     <sheetApiContext.Provider value={{ doc, setDoc }}>
       <DataContext.Provider
-        value={{ areaCodes, poles, setPoles, setAreaCodes, loadPoles, doc }}
+        value={{ dataSheet, poles, setPoles, setDataSheet, loadPoles, doc }}
       >
         <ToastContainer />
         <Component {...pageProps} />
