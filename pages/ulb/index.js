@@ -9,9 +9,9 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import DataContext from "@/Context/dataContext";
 export default function Switch() {
-  const { areaCodes } = useContext(DataContext);
+  const { dataSheet } = useContext(DataContext);
   const [search, setSearch] = useState("");
-  const area = useSearchParams()?.get("area");
+  const district = useSearchParams()?.get("district");
 
   return (
     <>
@@ -31,16 +31,16 @@ export default function Switch() {
       <div className="mx-5 lg:mx-[27%] mt-3">
         <h4 className="text-gray-600 text-sm">
           <Link className="hover:text-blue-500" href={"/"}>
-            District
+            DISTRICT
           </Link>
           <FontAwesomeIcon
             className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
             icon={faChevronRight}
           />
-          <b>{area}</b>
+          <b>{district}</b>
         </h4>
         <div className="py-5 lg:flex grid-cols-1 gap-5 grid">
-          <h4 className="text-2xl font-bold">{area}</h4>
+          <h4 className="text-2xl font-bold">{district}</h4>
           <div className="border w-full lg:w-2/5 border-gray-300 rounded-lg ml-auto px-2 text-sm flex">
             <FontAwesomeIcon
               className="text-gray-400 mr-4 py-2 text-lg"
@@ -56,15 +56,15 @@ export default function Switch() {
         </div>
       </div>
 
-      {areaCodes?.length == 0 && (
+      {dataSheet?.length == 0 && (
         <div className="mx-5 lg:mx-[27%] py-2">
           <p className="text-sm text-center text-rose-500">No data found...</p>
         </div>
       )}
 
       <ul className="mx-5 my-3 text-md cursor-pointer lg:text-lg text-gray-600 font-bold lg:mx-[27%]">
-        {areaCodes &&
-          areaCodes
+        {dataSheet &&
+          dataSheet
             ?.filter((row) =>
               row
                 .get("ULB")
@@ -73,12 +73,12 @@ export default function Switch() {
             )
             ?.map(
               (row) =>
-                row.get("District for ULB") == area &&
+                row.get("District for ULB") == district &&
                (
                   <Link
-                    href={`/switch?area=${row.get(
+                    href={`/ward?district=${row.get(
                       "District for ULB"
-                    )}&switch=${row.get("ULB")}`}
+                    )}&ulb=${row.get("ULB")}`}
                   >
                     <li className="border-b hover:bg-gray-100 rounded-t-lg border-gray-300 py-3 flex items-center">
                       <div>
@@ -95,7 +95,7 @@ export default function Switch() {
                   </Link>
                 )
             )}
-        {areaCodes == null &&
+        {dataSheet == null &&
           [
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
           ].map((item) => {

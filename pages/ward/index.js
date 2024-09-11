@@ -3,18 +3,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,
   faChevronRight,
-  faPlus,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import DataContext from "@/Context/dataContext";
-
-export default function Pole() {
-  const { areaCodes } = useContext(DataContext);
-
+export default function Switch() {
+  const { dataSheet } = useContext(DataContext);
   const [search, setSearch] = useState("");
-  const params = useSearchParams();
+  const district = useSearchParams()?.get("district");
+  const ulb = useSearchParams()?.get("ulb");
 
   return (
     <>
@@ -34,29 +32,23 @@ export default function Pole() {
       <div className="mx-5 lg:mx-[27%] mt-3">
         <h4 className="text-gray-600 text-sm">
           <Link className="hover:text-blue-500" href={"/"}>
-            District
+            DISTRICT
           </Link>
           <FontAwesomeIcon
             className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
             icon={faChevronRight}
           />
-          
-
-
-          <Link
-            className="hover:text-blue-500"
-            href={`/area?area=${params.get("area")}`}
-          >
-            {params.get("area")}
+          <Link className="hover:text-blue-500" href={`/ulb?district=${district}`}>
+            {district}
           </Link>
           <FontAwesomeIcon
             className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
             icon={faChevronRight}
           />
-          <b>{params.get("switch")}</b>
+          <b>{ulb}</b>
         </h4>
         <div className="py-5 lg:flex grid-cols-1 gap-5 grid">
-          <h4 className="text-2xl font-bold">{params.get("switch")}</h4>
+          <h4 className="text-2xl font-bold">{district}</h4>
           <div className="border w-full lg:w-2/5 border-gray-300 rounded-lg ml-auto px-2 text-sm flex">
             <FontAwesomeIcon
               className="text-gray-400 mr-4 py-2 text-lg"
@@ -69,59 +61,57 @@ export default function Pole() {
               className=" bg-white outline-none font-bold text-gray-600 w-full"
             />
           </div>
-          <Link
-            href={`/pole/new?area=${params.get("area")}&switch=${params.get(
-              "switch"
-            )}`}
-            className="bg-orange-600 py-3 text-center justify-center flex items-center lg:py-0 text-md text-white font-bold rounded-lg px-3"
-          >
-            <FontAwesomeIcon className="mr-2" icon={faPlus} />
-            New Pole
-          </Link>
         </div>
+        
       </div>
-      {areaCodes?.length == 0 && (
+
+      {dataSheet?.length == 0 && (
         <div className="mx-5 lg:mx-[27%] py-2">
           <p className="text-sm text-center text-rose-500">No data found...</p>
         </div>
       )}
 
-      <ul className="mx-5 my-8 grid grid-cols-2 gap-5 lg:grid-cols-4 text-md cursor-pointer lg:text-lg text-gray-600 font-bold lg:mx-[27%]">
-        {areaCodes == null &&
-          [
-            1, 2, 3, 4
-          ].map((item) => {
-            return (
-              <li className="bg-gray-200 animate-pulse py-8 rounded border border-gray-400"></li>
-            );
-          })}
-        {areaCodes &&
-          areaCodes
+      <ul className="mx-5 my-3 text-md cursor-pointer lg:text-lg text-gray-600 font-bold lg:mx-[27%]">
+        {dataSheet &&
+          dataSheet
             ?.filter((row) =>
               row
                 .get("Ward No.")
                 ?.toLowerCase()
-                ?.includes(search.toLocaleLowerCase())
+                .includes(search.toLocaleLowerCase())
             )
             ?.map(
               (row) =>
-                // row.get("DISTRICT") == params.get("area") &&
-                // row.get("ULB") == params.get("switch") && 
-                (
+                row.get("ULB NAME") == ulb &&
+               (
                   <Link
-                    href={`/pole?pole=${row._rowNumber}`}
+                    href={`/pole?district=${row.get(
+                      "ULB NAME"
+                    )}&ulb=${row.get("ULB")}&ward=${row.get("Ward No.")}`}
                   >
-                    <li className="border p-3 hover:bg-gray-100 rounded-lg border-gray-300 py-3 flex items-center">
+                    <li className="border-b hover:bg-gray-100 rounded-t-lg border-gray-300 py-3 flex items-center">
                       <div>
                         <h4 className="ml-2">{row.get("Ward No.")}</h4>
                         <p className="text-sm text-gray-500 font-medium ml-2">
-                          {row.get("Road/Street Name")}
+                          {row.get("ULB NAME")}
                         </p>
                       </div>
+                      <FontAwesomeIcon
+                        className="ml-auto text-sm mt-2 mr-5"
+                        icon={faChevronRight}
+                      />
                     </li>
                   </Link>
                 )
             )}
+        {dataSheet == null &&
+          [
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+          ].map((item) => {
+            return (
+              <li className="bg-gray-200 animate-pulse py-5 rounded my-2"></li>
+            );
+          })}
       </ul>
     </>
   );

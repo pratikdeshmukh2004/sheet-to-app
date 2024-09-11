@@ -6,7 +6,7 @@ import sheetApiContext from "@/Context/sheetApiContext";
 import DataContext from "@/Context/dataContext";
 
 export default function Home() {
-  const { areaCodes } = useContext(DataContext);
+  const { dataSheet } = useContext(DataContext);
 
   return (
     <>
@@ -21,21 +21,21 @@ export default function Home() {
               PGHH Streetlights Pithampur Cluster
             </h2>
           </div>
-          <h2 className="text-2xl py-8 font-bold text-white">District</h2>
+          <h2 className="text-2xl py-8 font-bold text-white">DISTRICT</h2>
         </div>
       </div>
-      {areaCodes?.length == 0 && (
+      {dataSheet?.length == 0 && (
         <div className="mx-5 lg:mx-[27%] py-2">
           <p className="text-sm text-center text-rose-500">No data found...</p>
         </div>
       )}
 
       <ul className="mx-5 my-8 text-md cursor-pointer lg:text-lg text-gray-600 font-bold lg:mx-[27%]">
-        {areaCodes &&
-          areaCodes?.map(
+        {dataSheet &&
+          dataSheet?.map(
             (row) =>
               row.get("DISTRICT") && (
-                <Link href={`/area?area=${row.get("DISTRICT")}`}>
+                <Link href={`/ulb?district=${row.get("DISTRICT")}`}>
                   <li className="border-b hover:bg-gray-100 rounded-t-lg border-gray-300 py-3 flex">
                     <h4 className="ml-2">{row.get("DISTRICT")}</h4>
                     <FontAwesomeIcon
@@ -46,7 +46,7 @@ export default function Home() {
                 </Link>
               )
           )}
-        {areaCodes == null &&
+        {dataSheet == null &&
           [
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
           ].map((item) => {
