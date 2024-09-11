@@ -11,7 +11,7 @@ import { useSearchParams } from "next/navigation";
 import DataContext from "@/Context/dataContext";
 
 export default function Pole() {
-  const { poles } = useContext(DataContext);
+  const { areaCodes } = useContext(DataContext);
 
   const [search, setSearch] = useState("");
   const params = useSearchParams();
@@ -34,12 +34,15 @@ export default function Pole() {
       <div className="mx-5 lg:mx-[27%] mt-3">
         <h4 className="text-gray-600 text-sm">
           <Link className="hover:text-blue-500" href={"/"}>
-            Area Code
+            District
           </Link>
           <FontAwesomeIcon
             className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
             icon={faChevronRight}
           />
+          
+
+
           <Link
             className="hover:text-blue-500"
             href={`/area?area=${params.get("area")}`}
@@ -77,14 +80,14 @@ export default function Pole() {
           </Link>
         </div>
       </div>
-      {poles?.length == 0 && (
+      {areaCodes?.length == 0 && (
         <div className="mx-5 lg:mx-[27%] py-2">
           <p className="text-sm text-center text-rose-500">No data found...</p>
         </div>
       )}
 
       <ul className="mx-5 my-8 grid grid-cols-2 gap-5 lg:grid-cols-4 text-md cursor-pointer lg:text-lg text-gray-600 font-bold lg:mx-[27%]">
-        {poles == null &&
+        {areaCodes == null &&
           [
             1, 2, 3, 4
           ].map((item) => {
@@ -92,24 +95,25 @@ export default function Pole() {
               <li className="bg-gray-200 animate-pulse py-8 rounded border border-gray-400"></li>
             );
           })}
-        {poles &&
-          poles
+        {areaCodes &&
+          areaCodes
             ?.filter((row) =>
               row
-                .get("Pole No.")
+                .get("Ward No.")
                 ?.toLowerCase()
                 ?.includes(search.toLocaleLowerCase())
             )
             ?.map(
               (row) =>
-                row.get("Area Code") == params.get("area") &&
-                row.get("Switch No.") == params.get("switch") && (
+                // row.get("DISTRICT") == params.get("area") &&
+                // row.get("ULB") == params.get("switch") && 
+                (
                   <Link
                     href={`/pole?pole=${row._rowNumber}`}
                   >
                     <li className="border p-3 hover:bg-gray-100 rounded-lg border-gray-300 py-3 flex items-center">
                       <div>
-                        <h4 className="ml-2">{row.get("Pole No.")}</h4>
+                        <h4 className="ml-2">{row.get("Ward No.")}</h4>
                         <p className="text-sm text-gray-500 font-medium ml-2">
                           {row.get("Road/Street Name")}
                         </p>

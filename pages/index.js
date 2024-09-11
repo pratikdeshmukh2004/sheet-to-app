@@ -21,7 +21,7 @@ export default function Home() {
               PGHH Streetlights Pithampur Cluster
             </h2>
           </div>
-          <h2 className="text-2xl py-8 font-bold text-white">Area Code</h2>
+          <h2 className="text-2xl py-8 font-bold text-white">District</h2>
         </div>
       </div>
       {areaCodes?.length == 0 && (
@@ -34,10 +34,10 @@ export default function Home() {
         {areaCodes &&
           areaCodes?.map(
             (row) =>
-              row.get("Area Code") && (
-                <Link href={`/area?area=${row.get("Area Code")}`}>
+              row.get("DISTRICT") && (
+                <Link href={`/area?area=${row.get("DISTRICT")}`}>
                   <li className="border-b hover:bg-gray-100 rounded-t-lg border-gray-300 py-3 flex">
-                    <h4 className="ml-2">{row.get("Area Code")}</h4>
+                    <h4 className="ml-2">{row.get("DISTRICT")}</h4>
                     <FontAwesomeIcon
                       className="ml-auto text-sm mt-2 mr-5"
                       icon={faChevronRight}

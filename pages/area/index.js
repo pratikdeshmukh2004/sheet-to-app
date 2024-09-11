@@ -31,7 +31,7 @@ export default function Switch() {
       <div className="mx-5 lg:mx-[27%] mt-3">
         <h4 className="text-gray-600 text-sm">
           <Link className="hover:text-blue-500" href={"/"}>
-            Area Code
+            District
           </Link>
           <FontAwesomeIcon
             className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
@@ -67,23 +67,24 @@ export default function Switch() {
           areaCodes
             ?.filter((row) =>
               row
-                .get("Switch No.")
+                .get("ULB")
                 ?.toLowerCase()
                 .includes(search.toLocaleLowerCase())
             )
             ?.map(
               (row) =>
-                row.get("Area Code For Switch") == area && (
+                row.get("District for ULB") == area &&
+               (
                   <Link
                     href={`/switch?area=${row.get(
-                      "Area Code For Switch"
-                    )}&switch=${row.get("Switch No.")}`}
+                      "District for ULB"
+                    )}&switch=${row.get("ULB")}`}
                   >
                     <li className="border-b hover:bg-gray-100 rounded-t-lg border-gray-300 py-3 flex items-center">
                       <div>
-                        <h4 className="ml-2">{row.get("Switch No.")}</h4>
+                        <h4 className="ml-2">{row.get("ULB")}</h4>
                         <p className="text-sm text-gray-500 font-medium ml-2">
-                          {row.get("Area Code For Switch")}
+                          {row.get("District for ULB")}
                         </p>
                       </div>
                       <FontAwesomeIcon

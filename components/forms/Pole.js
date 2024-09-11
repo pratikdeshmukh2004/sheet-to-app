@@ -106,6 +106,10 @@ const Pole = ({ isEditing = null }) => {
       type: "text",
       label: "Remarks",
     },
+    {
+      type: "file",
+      label: "Image"
+    }
   ]);
 
   useEffect(
@@ -350,6 +354,7 @@ const Pole = ({ isEditing = null }) => {
             />
           )
         )}
+      
       </form>
       <div className="px-10 mt-10 flex gap-5 py-5 bottom-0 border-t border-gray-300 w-full">
         <button

@@ -21,12 +21,12 @@ export default function App({ Component, pageProps }) {
     });
 
     const doc = new GoogleSpreadsheet(
-      "1i3yy7N6G92PEJweCImkdiC4-BkvY7WGoPVXn6ldNQTg",
+      "17nY1MKZEHCpWJU3zcx9hikSKUKdz7MuWm_Y4mE9fN0M",
       serviceAccountAuth
     );
     await doc.loadInfo();
     setDoc(doc);
-    doc.sheetsByIndex[0].getRows().then((data) => {
+    doc.sheetsByIndex[1].getRows().then((data) => {
       setAreaCodes(data);
       console.log("Datasheet loaded: ", data);
     });
