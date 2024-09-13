@@ -21,6 +21,7 @@ export default function Pole() {
   const row = poles?.find((row) => row._rowNumber == params.get("pole"));
   const router = useRouter();
   console.log(row);
+  const district = useSearchParams()?.get("district");
 
   const handleDelete = (row) => {
     setLoading(true);
@@ -50,29 +51,20 @@ export default function Pole() {
       </div>
       <div className="mx-5 lg:mx-[27%] mt-3">
         <h4 className="text-gray-600 text-sm">
-          <Link className="hover:text-blue-500" href={"/"}>
-            Area Code
+        <Link className="hover:text-blue-500" href={"/"}>
+            DISTRICT
           </Link>
           <FontAwesomeIcon
             className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
             icon={faChevronRight}
           />
-          <Link
-            className="hover:text-blue-500"
-            href={`/area?area=${row?.get("Area Code")}`}
-          >
-            {row?.get("Area Code")}
+          <Link className="hover:text-blue-500" href={`/ulb?district=${district}`}>
+            {district}
           </Link>
           <FontAwesomeIcon
             className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
             icon={faChevronRight}
           />
-          <Link
-            className="hover:text-blue-500"
-            href={`/switch?area=${row?.get("Area Code")}&switch=${row?.get("Switch No.")}`}
-          >
-            {row?.get("Switch No.")}
-          </Link>
           <FontAwesomeIcon
             className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
             icon={faChevronRight}
@@ -80,7 +72,7 @@ export default function Pole() {
           <b>{params.get("pole")}</b>
         </h4>
         <div className="py-10 flex gap-5 border-b border-gray-200">
-          <h4 className="text-2xl font-bold">{params.get("pole")}</h4>
+          <h4 className="text-2xl font-bold">{params.get("pole")}th pole</h4>
           <Link
             className="bg-orange-600 ml-auto py-2 text-md text-white font-bold rounded-lg px-3"
             href={`/pole/edit?pole=${params.get("pole")}`}
@@ -99,6 +91,7 @@ export default function Pole() {
           </button>
         </div>
         <div className="py-5 grid grid-cols-1 gap-3 lg:grid-cols-2">
+          
           {row &&
             Object.keys(row.toObject())?.map(
               (col) =>

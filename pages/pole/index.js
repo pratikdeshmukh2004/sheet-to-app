@@ -11,11 +11,9 @@ import { useSearchParams } from "next/navigation";
 import DataContext from "@/Context/dataContext";
 
 export default function Pole() {
-  const { poles } = useContext(DataContext);
-
+  const { poles, setPoles, doc } = useContext(DataContext);
   const [search, setSearch] = useState("");
   const params = useSearchParams();
-
   return (
     <>
       <div className="bg-[#24282d] hidden lg:block">

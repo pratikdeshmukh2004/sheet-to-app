@@ -26,18 +26,18 @@ export default function App({ Component, pageProps }) {
     );
     await doc.loadInfo();
     setDoc(doc);
-    doc.sheetsByIndex[1].getRows().then((data) => {
+    doc.sheetsByIndex[0].getRows().then((data) => {
       setDataSheet(data);
       console.log("Datasheet loaded: ", data);
     });
-    // doc.sheetsByIndex[1].getRows().then((data) => {
-    //   setPoles(data);
-    //   console.log("Poles loaded: ", data);
-    // });
+    doc.sheetsByIndex[1].getRows().then((data) => {
+      setPoles(data);
+      console.log("Poles loaded: ", data);
+    });
   };
 
   const loadPoles = async () => {
-    doc.sheetsByIndex[3].getRows().then((data) => {
+    doc.sheetsByIndex[1].getRows().then((data) => {
       setPoles(data);
     });
   };

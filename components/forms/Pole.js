@@ -353,7 +353,7 @@ const Pole = ({ isEditing = null }) => {
     e.preventDefault();
     const new_values = values;
     setLoading(true);
-    doc.sheetsByIndex[3].addRows([new_values]).then((data) => {
+    doc.sheetsByIndex[1].addRows([new_values]).then((data) => {
       console.log("data...", data);
       toast.success("Pole created successfully.", {
         position: "top-right",
