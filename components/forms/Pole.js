@@ -268,12 +268,16 @@ const Pole = ({ isEditing = null }) => {
         })),
     },
     {
-      type: "date",
-      label: "Date of Installation",
-    },
-    {
       type: "text",
       label: "Remarks",
+    },
+    {
+      type: "date",
+      label: "Date of installation",
+    },
+    {
+      type: "file",
+      label: "Image",
     },
   ]);
 
@@ -347,60 +351,9 @@ const Pole = ({ isEditing = null }) => {
 
   const createNewPole = async (e) => {
     e.preventDefault();
-    console.log(values, "pole....");
-    const list_of_form_fittings = form
-      .filter((item) => item.label.includes("Type Of Fitting"))
-      .map((item) => item.label);
-    const list_of_form_wattage = form
-      .filter((item) => item.label.includes("Wattage"))
-      .map((item) => item.label);
-    const new_values = {};
-    Object.keys(values).map((item) => {
-      if (item.includes("Type Of Fitting") || item.includes("Wattage")) {
-        if (
-          list_of_form_fittings.includes(item) ||
-          list_of_form_wattage.includes(item)
-        ) {
-          new_values[item] = values[item];
-        }
-      } else {
-        new_values[item] = values[item];
-      }
-    });
-    if (
-      poles.filter(
-        (item) =>
-          item.get("Pole No.") == values["Pole No."] &&
-          item.get("Switch No.") == values["Switch No."] &&
-          item.get("Area Code") == values["Area Code"]
-      ).length > 0
-    ) {
-      return toast.warning("Pole No. already exists.", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-      });
-    }
-    if (Object.keys(new_values).length == 0) return;
-    if (Object.keys(new_values).length !== Object.keys(form).length) {
-      console.log("Please fill all the fields....");
-      return toast.warning("Please fill all the fields.", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
+    const new_values = values;
     setLoading(true);
-    doc.sheetsByIndex[1].addRow(new_values).then((data) => {
+    doc.sheetsByIndex[3].addRows([new_values]).then((data) => {
       console.log("data...", data);
       toast.success("Pole created successfully.", {
         position: "top-right",
@@ -412,7 +365,7 @@ const Pole = ({ isEditing = null }) => {
         theme: "light",
       });
       setValues({});
-      loadPoles();
+      // loadPoles();
       setLoading(false);
       router.back();
     });

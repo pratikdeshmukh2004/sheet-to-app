@@ -48,7 +48,7 @@ export default function Switch() {
           <b>{ulb}</b>
         </h4>
         <div className="py-5 lg:flex grid-cols-1 gap-5 grid">
-          <h4 className="text-2xl font-bold">{district}</h4>
+          <h4 className="text-2xl font-bold">{ulb}</h4>
           <div className="border w-full lg:w-2/5 border-gray-300 rounded-lg ml-auto px-2 text-sm flex">
             <FontAwesomeIcon
               className="text-gray-400 mr-4 py-2 text-lg"
@@ -85,9 +85,7 @@ export default function Switch() {
                 row.get("ULB NAME") == ulb &&
                (
                   <Link
-                    href={`/pole?district=${row.get(
-                      "ULB NAME"
-                    )}&ulb=${row.get("ULB")}&ward=${row.get("Ward No")}`}
+                    href={`/pole?district=${district}&ulb=${row.get("ULB NAME")}&ward=${row.get("Ward No")}`}
                   >
                     <li className="border-b hover:bg-gray-100 rounded-t-lg border-gray-300 py-3 flex items-center">
                       <div>
