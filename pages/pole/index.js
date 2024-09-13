@@ -40,14 +40,22 @@ export default function Pole() {
             className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
             icon={faChevronRight}
           />
-           <Link className="hover:text-blue-500" href={`/ulb?district=${params.get("district")}`}>
+          <Link
+            className="hover:text-blue-500"
+            href={`/ulb?district=${params.get("district")}`}
+          >
             {params.get("district")}
           </Link>
           <FontAwesomeIcon
             className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
             icon={faChevronRight}
           />
-           <Link className="hover:text-blue-500" href={`/ward?district=${params.get("ulb")}&ulb=${params.get("ulb")}`}>
+          <Link
+            className="hover:text-blue-500"
+            href={`/ward?district=${params.get("ulb")}&ulb=${params.get(
+              "ulb"
+            )}`}
+          >
             {params.get("ulb")}
           </Link>
           <FontAwesomeIcon
@@ -71,9 +79,9 @@ export default function Pole() {
             />
           </div>
           <Link
-            href={`/pole/new?area=${params.get("area")}&switch=${params.get(
-              "switch"
-            )}`}
+            href={`/pole/new?district=${params.get(
+              "district"
+            )}&ulb=${params.get("ulb")}&ward=${params.get("ward")}`}
             className="bg-orange-600 py-3 text-center justify-center flex items-center lg:py-0 text-md text-white font-bold rounded-lg px-3"
           >
             <FontAwesomeIcon className="mr-2" icon={faPlus} />
@@ -89,9 +97,7 @@ export default function Pole() {
 
       <ul className="mx-5 my-8 grid grid-cols-2 gap-5 lg:grid-cols-4 text-md cursor-pointer lg:text-lg text-gray-600 font-bold lg:mx-[27%]">
         {poles == null &&
-          [
-            1, 2, 3, 4
-          ].map((item) => {
+          [1, 2, 3, 4].map((item) => {
             return (
               <li className="bg-gray-200 animate-pulse py-8 rounded border border-gray-400"></li>
             );

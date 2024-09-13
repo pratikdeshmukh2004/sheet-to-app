@@ -1,3 +1,8 @@
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+} from "@headlessui/react";
 import SelectInput from "./SelectController";
 import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
@@ -7,8 +12,13 @@ import InputController from "./InputController";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import Loader from "../loader";
+
+import Head from "next/head";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+
 const Pole = ({ isEditing = null }) => {
-  const { areaCodes, loadPoles, poles, doc } = useContext(DataContext);
+  const { dataSheet, loadPoles, poles, doc } = useContext(DataContext);
   const [values, setValues] = useState({});
   const params = useSearchParams();
   const router = useRouter();
@@ -17,99 +27,100 @@ const Pole = ({ isEditing = null }) => {
   const [form, setForm] = useState([
     {
       type: "select",
-      label: "Area Code",
-      options: areaCodes
-        ?.filter((item) => item.get("Area Code"))
+      label: "District",
+      options: dataSheet
+        ?.filter((item) => item.get("DISTRICT"))
         ?.map((item) => ({
-          label: item.get("Area Code"),
-          value: item.get("Area Code"),
+          label: item.get("DISTRICT"),
+          value: item.get("DISTRICT"),
         })),
     },
     {
       type: "select",
-      label: "Switch No.",
-      options: areaCodes
+      label: "ULB Name",
+      options: dataSheet
         ?.filter(
           (item) =>
-            item.get("Area Code For Switch") &&
-            item.get("Area Code For Switch") == values["Area Code"]
+            item.get("District for ULB") &&
+            item.get("District for ULB") == values["District"]
         )
         ?.map((item) => ({
-          label: item.get("Switch No."),
-          value: item.get("Switch No."),
+          label: item.get("ULB"),
+          value: item.get("ULB"),
         })),
     },
     {
-      type: "number",
-      label: "Ward No.",
+      type: "select",
+      label: "Ward No",
+      options: dataSheet
+        ?.filter(
+          (item) =>
+            item.get("ULB NAME") && item.get("ULB NAME") == values["ULB Name"]
+        )
+        ?.map((item) => ({
+          label: item.get("Ward No"),
+          value: item.get("Ward No"),
+        })),
     },
     {
       type: "text",
-      label: "Pole Land Mark/ Location ",
+      label: "Pole Land Mark/ Location",
+      category: "Pole Details",
     },
     {
-      type: "text",
+      type: "select",
+      label: "Pole type",
+      category: "Pole Details",
+      options: dataSheet
+        ?.filter((item) => item.get("Pole type"))
+        ?.map((item) => ({
+          label: item.get("Pole type"),
+          value: item.get("Pole type"),
+        })),
+    },
+    {
+      type: "select",
       label: "Pole arrangement",
-    },
-    {
-      type: "select",
-      label: "Road Type",
-      options: areaCodes
-        ?.filter((item) => item.get("Road Types"))
+      category: "Pole Details",
+      options: dataSheet
+        ?.filter((item) => item.get("Pole arrangement"))
         ?.map((item) => ({
-          label: item.get("Road Types"),
-          value: item.get("Road Types"),
+          label: item.get("Pole arrangement"),
+          value: item.get("Pole arrangement"),
         })),
     },
     {
-      type: "number",
-      label: "Road Width",
-    },
-    {
       type: "select",
-      label: "Type Of Pole",
-      options: areaCodes
-        ?.filter((item) => item.get("Type Of Pole"))
-        ?.map((item) => ({
-          label: item.get("Type Of Pole"),
-          value: item.get("Type Of Pole"),
-        })),
-    },
-    {
-      type: "number",
       label: "Pole Height",
-    },
-    {
-      type: "number",
-      label: "Fitting Height",
+      category: "Pole Details",
+      options: dataSheet
+        ?.filter((item) => item.get("Pole Height"))
+        ?.map((item) => ({
+          label: item.get("Pole Height"),
+          value: item.get("Pole Height"),
+        })),
     },
     {
       type: "select",
-      label: "Arms",
-      options: areaCodes
-        ?.filter((item) => item.get("Arms"))
+      label: "Old / New",
+      category: "Pole Details",
+      options: dataSheet
+        ?.filter((item) => item.get("Old / New"))
         ?.map((item) => ({
-          label: item.get("Arms"),
-          value: item.get("Arms"),
+          label: item.get("Old / New"),
+          value: item.get("Old / New"),
         })),
     },
     {
       type: "text",
       label: "Lattitude",
+      category: "Pole Details"
     },
     {
       type: "text",
       label: "Longitude",
+      category: "Pole Detail"
     },
-
-    {
-      type: "text",
-      label: "Remarks",
-    },
-    {
-      type: "file",
-      label: "Image"
-    }
   ]);
 
   useEffect(
@@ -144,8 +155,9 @@ const Pole = ({ isEditing = null }) => {
         prefilled[item] = row_data[item];
       });
     } else {
-      prefilled["Area Code"] = params.get("area");
-      prefilled["Switch No."] = params.get("switch");
+      prefilled["District"] = params.get("district");
+      prefilled["ULB Name"] = params.get("ulb");
+      prefilled["Ward No"] = params.get("ward");
     }
     setValues(prefilled);
   }, []);
@@ -162,7 +174,7 @@ const Pole = ({ isEditing = null }) => {
       filteredForm.push({
         type: "select",
         label: `Type Of Fitting ${i}`,
-        options: areaCodes
+        options: dataSheet
           ?.filter((item) => item.get("Type Of Fiting"))
           ?.map((item) => ({
             label: item.get("Type Of Fiting"),
@@ -172,7 +184,7 @@ const Pole = ({ isEditing = null }) => {
       filteredForm.push({
         type: "select",
         label: `Wattage ${i}`,
-        options: areaCodes
+        options: dataSheet
           ?.filter(
             (item) =>
               item.get("Wattage") &&
@@ -185,6 +197,30 @@ const Pole = ({ isEditing = null }) => {
           })),
       });
     }
+    filteredForm.map((input) => {
+      if (input.label === "ULB Name") {
+        input.options = dataSheet
+          ?.filter(
+            (item) =>
+              item.get("District for ULB") &&
+              item.get("District for ULB") == values["District"]
+          )
+          ?.map((item) => ({
+            label: item.get("ULB"),
+            value: item.get("ULB"),
+          }));
+      } else if (input.label === "Ward No") {
+        input.options = dataSheet
+          ?.filter(
+            (item) =>
+              item.get("ULB NAME") && item.get("ULB NAME") == values["ULB Name"]
+          )
+          ?.map((item) => ({
+            label: item.get("Ward No"),
+            value: item.get("Ward No"),
+          }));
+      }
+    });
     setForm(filteredForm);
   }, [values]);
 
@@ -324,37 +360,72 @@ const Pole = ({ isEditing = null }) => {
 
   return (
     <div>
+      <Head>
+        <title>{isEditing ? "Edit Pole" : "New Pole"}</title>
+      </Head>
       <div className="px-10 lg:px-[27%] bg-[#24282d]">
         <h2 className="text-2xl py-3 font-bold text-white">
           {isEditing ? "Edit" : "New"} Pole
         </h2>
       </div>
       <form onSubmit={(e) => createNewPole(e)} className="mx-10 lg:mx-[27%]">
-        {form.map((item) =>
-          item.type == "select" ? (
-            <SelectInput
-              label={item.label}
-              required
-              name={item.label}
-              value={{ label: values[item.label], value: values[item.label] }}
-              options={item.options}
-              onChange={(value) =>
-                setValues({ ...values, [item.label]: value.value })
-              }
-            />
-          ) : (
-            <InputController
-              required
-              label={item.label}
-              type={item.type}
-              value={values[item.label]}
-              onChange={(e) =>
-                setValues({ ...values, [item.label]: e.target.value })
-              }
-            />
-          )
-        )}
-      
+        {[...new Set(form.map((ele) => ele.category))].map((category) => (
+          <Disclosure as="div" className="my-5" defaultOpen={!category || category == "Pole Details"}>
+            <DisclosureButton className="group flex w-full items-center justify-between">
+              <div className="text-md flex px-1 text-gray-700 justify-between w-full font-medium ">
+                <h4>{category}</h4>
+                {category && <FontAwesomeIcon className="ml-auto mt-1 text-gray-500" icon={faChevronDown} />}
+              </div>
+            </DisclosureButton>
+            <DisclosurePanel transition className="px-3 border rounded my-1">
+              {form.map(
+                (item) =>
+                  item.category == category &&
+                  (item.type == "select" ? (
+                    <SelectInput
+                      label={item.label}
+                      required
+                      name={item.label}
+                      value={{
+                        label: values[item.label],
+                        value: values[item.label],
+                      }}
+                      options={item.options}
+                      onChange={(value) => {
+                        if (item.label == "District") {
+                          return setValues({
+                            ...values,
+                            "ULB Name": null,
+                            [item.label]: value.value,
+                          });
+                        } else if (item.label == "ULB Name") {
+                          return setValues({
+                            ...values,
+                            "Ward No": null,
+                            [item.label]: value.value,
+                          });
+                        }
+                        return setValues({
+                          ...values,
+                          [item.label]: value.value,
+                        });
+                      }}
+                    />
+                  ) : (
+                    <InputController
+                      required
+                      label={item.label}
+                      type={item.type}
+                      value={values[item.label]}
+                      onChange={(e) =>
+                        setValues({ ...values, [item.label]: e.target.value })
+                      }
+                    />
+                  ))
+              )}
+            </DisclosurePanel>
+          </Disclosure>
+        ))}
       </form>
       <div className="px-10 mt-10 flex gap-5 py-5 bottom-0 border-t border-gray-300 w-full">
         <button
@@ -367,7 +438,7 @@ const Pole = ({ isEditing = null }) => {
         </button>
 
         <button
-          onClick={() => router.back()}
+          onClick={() => router.replace(`/pole?district=${params.get("district")}&ulb=${params.get("ulb")}&ward=${params.get("ward")}`)}
           className="border border-gray-400 py-2 text-md text-gray-800 font-bold rounded-lg px-5"
         >
           Cancel

@@ -30,10 +30,10 @@ export default function App({ Component, pageProps }) {
       setDataSheet(data);
       console.log("Datasheet loaded: ", data);
     });
-    doc.sheetsByIndex[3].getRows().then((data) => {
-      setPoles(data);
-      console.log("Poles loaded: ", data);
-    });
+    // doc.sheetsByIndex[1].getRows().then((data) => {
+    //   setPoles(data);
+    //   console.log("Poles loaded: ", data);
+    // });
   };
 
   const loadPoles = async () => {
