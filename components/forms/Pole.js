@@ -65,7 +65,7 @@ const Pole = ({ isEditing = null }) => {
     {
       type: "text",
       label: "Pole Land Mark/ Location",
-      category: "Pole Details",
+      
     },
     {
       type: "select",
@@ -101,9 +101,19 @@ const Pole = ({ isEditing = null }) => {
         })),
     },
     {
+      type: "text",
+      label: "Lattitude",
+      category: "Pole Details"
+    },
+    {
+      type: "text",
+      label: "Longitude",
+      category: "Pole Details"
+    },
+    {
       type: "select",
       label: "Old / New",
-      category: "Pole Details",
+      category: "LED",
       options: dataSheet
         ?.filter((item) => item.get("Old / New"))
         ?.map((item) => ({
@@ -112,14 +122,158 @@ const Pole = ({ isEditing = null }) => {
         })),
     },
     {
+      type: "select",
+      label: "Rating (W)",
+      category: "LED",
+      options: dataSheet
+        ?.filter((item) => item.get("Rating (W)"))
+        ?.map((item) => ({
+          label: item.get("Rating (W)"),
+          value: item.get("Rating (W)"),
+        })),
+    },
+    {
+      type: "select",
+      label: "Nos.",
+      category: "LED",
+      options: dataSheet
+        ?.filter((item) => item.get("Nos."))
+        ?.map((item) => ({
+          label: item.get("Nos."),
+          value: item.get("Nos."),
+        })),
+    },{
+      type: "select",
+      label: "Make",
+      category: "LED",
+      options: dataSheet
+        ?.filter((item) => item.get("Make"))
+        ?.map((item) => ({
+          label: item.get("Make"),
+          value: item.get("Make"),
+        })),
+    },{
+      type: "select",
+      label: "Arm Type",
+      category: "LED",
+      options: dataSheet
+        ?.filter((item) => item.get("Arm Type"))
+        ?.map((item) => ({
+          label: item.get("Arm Type"),
+          value: item.get("Arm Type"),
+        })),
+    },{
+      type: "select",
+      label: "Arm Length",
+      category: "LED",
+      options: dataSheet
+        ?.filter((item) => item.get("Arm Length"))
+        ?.map((item) => ({
+          label: item.get("Arm Length"),
+          value: item.get("Arm Length"),
+        })),
+    },{
+      type: "select",
+      label: "CCMS/ Timer",
+      category: "Feeder Panel",
+      options: dataSheet
+        ?.filter((item) => item.get("CCMS/ Timer"))
+        ?.map((item) => ({
+          label: item.get("CCMS/ Timer"),
+          value: item.get("CCMS/ Timer"),
+        })),
+    },{
+      type: "select",
+      label: "CCMS Rating (KW)",
+      category: "Feeder Panel",
+      options: dataSheet
+        ?.filter((item) => item.get("CCMS Rating (KW)"))
+        ?.map((item) => ({
+          label: item.get("CCMS Rating (KW)"),
+          value: item.get("CCMS Rating (KW)"),
+        })),
+    },{
+      type: "select",
+      label: "Coil",
+      category: "Feeder Panel",
+      options: dataSheet
+        ?.filter((item) => item.get("Coil"))
+        ?.map((item) => ({
+          label: item.get("Coil"),
+          value: item.get("Coil"),
+        })),
+    },{
+      type: "select",
+      label: "GI Pipe",
+      category: "Feeder Panel",
+      options: dataSheet
+        ?.filter((item) => item.get("GI Pipe"))
+        ?.map((item) => ({
+          label: item.get("GI Pipe"),
+          value: item.get("GI Pipe"),
+        })),
+    },{
       type: "text",
-      label: "Lattitude",
-      category: "Pole Details"
+      label: "Cable length New Installed (m)",
+      category: "Cable"
+    },{
+      type: "select",
+      label: "Cable type (OH/UG)",
+      category: "Cable",
+      options: dataSheet
+        ?.filter((item) => item.get("Cable type (OH/UG)"))
+        ?.map((item) => ({
+          label: item.get("Cable type (OH/UG)"),
+          value: item.get("Cable type (OH/UG)"),
+        })),
+    },{
+      type: "select",
+      label: "Cable Rating (Sq.mm)",
+      category: "Cable",
+      options: dataSheet
+        ?.filter((item) => item.get("Cable Rating (Sq.mm)"))
+        ?.map((item) => ({
+          label: item.get("Cable Rating (Sq.mm)"),
+          value: item.get("Cable Rating (Sq.mm)"),
+        })),
+    },{
+      type: "select",
+      label: "Suspension Clamp",
+      category: "Cable",
+      options: dataSheet
+        ?.filter((item) => item.get("Suspension Clamp"))
+        ?.map((item) => ({
+          label: item.get("Suspension Clamp"),
+          value: item.get("Suspension Clamp"),
+        })),
+    },{
+      type: "select",
+      label: "Dead End Clamp",
+      category: "Cable",
+      options: dataSheet
+        ?.filter((item) => item.get("Dead End Clamp"))
+        ?.map((item) => ({
+          label: item.get("Dead End Clamp"),
+          value: item.get("Dead End Clamp"),
+        })),
+    },{
+      type: "select",
+      label: "Eye-hook",
+      category: "LED",
+      options: dataSheet
+        ?.filter((item) => item.get("Eye-hook"))
+        ?.map((item) => ({
+          label: item.get("Eye-hook"),
+          value: item.get("Eye-hook"),
+        })),
+    },
+    {
+      type: "date",
+      label: "Date of Installation",
     },
     {
       type: "text",
-      label: "Longitude",
-      category: "Pole Detail"
+      label: "Remarks",
     },
   ]);
 
@@ -163,40 +317,7 @@ const Pole = ({ isEditing = null }) => {
   }, []);
 
   useEffect(() => {
-    console.log(values, "here.....");
-    const arms = parseInt(values["Arms"]);
-    const filteredForm = form.filter(
-      (item) =>
-        !item.label.includes("Type Of Fitting") &&
-        !item.label.includes("Wattage")
-    );
-    for (let i = 1; i < arms + 1; i++) {
-      filteredForm.push({
-        type: "select",
-        label: `Type Of Fitting ${i}`,
-        options: dataSheet
-          ?.filter((item) => item.get("Type Of Fiting"))
-          ?.map((item) => ({
-            label: item.get("Type Of Fiting"),
-            value: item.get("Type Of Fiting"),
-          })),
-      });
-      filteredForm.push({
-        type: "select",
-        label: `Wattage ${i}`,
-        options: dataSheet
-          ?.filter(
-            (item) =>
-              item.get("Wattage") &&
-              item.get("Type Of Fitting For Wattage") ===
-                values[`Type Of Fitting ${i}`]
-          )
-          ?.map((item) => ({
-            label: item.get("Wattage"),
-            value: item.get("Wattage"),
-          })),
-      });
-    }
+    const filteredForm = form;
     filteredForm.map((input) => {
       if (input.label === "ULB Name") {
         input.options = dataSheet
@@ -368,7 +489,7 @@ const Pole = ({ isEditing = null }) => {
           {isEditing ? "Edit" : "New"} Pole
         </h2>
       </div>
-      <form onSubmit={(e) => createNewPole(e)} className="mx-10 lg:mx-[27%]">
+      <form className="mx-10 lg:mx-[27%]">
         {[...new Set(form.map((ele) => ele.category))].map((category) => (
           <Disclosure as="div" className="my-5" defaultOpen={!category || category == "Pole Details"}>
             <DisclosureButton className="group flex w-full items-center justify-between">
@@ -396,6 +517,7 @@ const Pole = ({ isEditing = null }) => {
                           return setValues({
                             ...values,
                             "ULB Name": null,
+                            "Ward No": null,
                             [item.label]: value.value,
                           });
                         } else if (item.label == "ULB Name") {
