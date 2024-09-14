@@ -115,7 +115,7 @@ export default function Pole() {
           <b>{params.get("pole")}</b>
         </h4>
         <div className="py-10 flex gap-5 border-b border-gray-200">
-          <h4 className="text-2xl font-bold">{params.get("pole")}th pole</h4>
+          <h4 className="text-2xl font-bold">{params.get("pole")}</h4>
           <Link
             className="bg-orange-600 ml-auto py-2 text-md text-white font-bold rounded-lg px-3"
             href={`/pole/edit?pole=${params.get("pole")}`}
@@ -138,7 +138,7 @@ export default function Pole() {
           {row &&
             Object.keys(categories).map((category, index) => (
               <div key={category} className="mb-5">
-                <h3 className="text-lg font-semibold text-gray-600 mb-3 ">
+                <h3 className="text-lg font-bold text-gray-900 mb-3 ">
                   {category}
                 </h3>{" "}
                 <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
