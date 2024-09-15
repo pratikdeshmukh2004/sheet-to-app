@@ -1,6 +1,7 @@
-import React from "react";
+// import React from "react";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 const GoogleLoginButton = () => {
 
   const router = useRouter()
@@ -18,7 +19,11 @@ const GoogleLoginButton = () => {
       .then((response) => response.json())
       .then((userInfo) => {
        
-
+        const getUser = JSON.parse(localStorage.getItem("user"));
+        if(!getUser){
+          localStorage.setItem("user", JSON.stringify(userInfo));
+        }
+        
         // You can now send this information to your backend or use it in your app
         router.replace("/");
       })
@@ -31,6 +36,14 @@ const GoogleLoginButton = () => {
   const login = useGoogleLogin({
     onSuccess: handleSuccess
   })
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));    
+    if(user){
+      router.replace("/");
+    }
+  }, [])
+  
 
 
   return (
