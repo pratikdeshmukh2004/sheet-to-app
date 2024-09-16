@@ -9,6 +9,7 @@ import {
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import DataContext from "@/Context/dataContext";
+import Header from "@/components/Header";
 
 export default function Pole() {
   const { poles, setPoles, doc } = useContext(DataContext);
@@ -18,15 +19,7 @@ export default function Pole() {
     <>
       <div className="bg-[#24282d] hidden lg:block">
         <div className="mx-5 lg:mx-[27%]">
-          <div className="flex py-3">
-            <img
-              className="w-6 h-6 mr-2"
-              src="https://res.cloudinary.com/glide/image/fetch/f_auto,h_150,c_limit/https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Fglide-prod.appspot.com%2Fo%2Ficon-images%252Fanonymous-0ea76cd1-73a2-4ff5-80ad-d7900de1e6e2.jpeg%3Falt%3Dmedia%26token%3D87542351-bd05-4aac-b0b9-9ddeffb9e267"
-            />
-            <h2 className="text-lg text-white font-bold font">
-              PGHH Streetlights Pithampur Cluster
-            </h2>
-          </div>
+          <Header />
         </div>
       </div>
       <div className="mx-5 lg:mx-[27%] mt-3">
@@ -112,12 +105,12 @@ export default function Pole() {
               (row) =>
                 row.get("District") == params.get("district") &&
                 row.get("ULB Name") == params.get("ulb") && (
-                  <Link
-                    href={`/pole/detail?pole=${row._rowNumber}`}
-                  >
+                  <Link href={`/pole/detail?pole=${row._rowNumber}`}>
                     <li className="border p-3 hover:bg-gray-100 rounded-lg border-gray-300 py-3 flex items-center">
                       <div>
-                        <h4 className="ml-2">{row.get("Pole Land Mark/ Location")}</h4>
+                        <h4 className="ml-2">
+                          {row.get("Pole Land Mark/ Location")}
+                        </h4>
                         <p className="text-sm text-gray-500 font-medium ml-2">
                           {row.get("Pole type")}
                         </p>

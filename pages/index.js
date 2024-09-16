@@ -4,24 +4,18 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import sheetApiContext from "@/Context/sheetApiContext";
 import DataContext from "@/Context/dataContext";
+import Header from "@/components/Header";
+
 
 export default function Home() {
-  const { dataSheet } = useContext(DataContext);
+  const { dataSheet, user } = useContext(DataContext);
 
   return (
     <>
       <div className="bg-[#24282d]">
         <div className="mx-10 lg:mx-[27%]">
-          <div className="flex py-2">
-            <img
-              className="w-6 hidden lg:block h-6 mr-2"
-              src="https://res.cloudinary.com/glide/image/fetch/f_auto,h_150,c_limit/https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Fglide-prod.appspot.com%2Fo%2Ficon-images%252Fanonymous-0ea76cd1-73a2-4ff5-80ad-d7900de1e6e2.jpeg%3Falt%3Dmedia%26token%3D87542351-bd05-4aac-b0b9-9ddeffb9e267"
-            />
-            <h2 className="text-lg hidden lg:block text-white font-bold font">
-              PGHH Streetlights Pithampur Cluster
-            </h2>
-          </div>
-          <h2 className="text-2xl py-8 font-bold text-white">DISTRICT</h2>
+          <Header />
+          <h2 className="text-2xl py-3 font-bold text-white">DISTRICT</h2>
         </div>
       </div>
       {dataSheet?.length == 0 && (

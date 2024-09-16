@@ -5,12 +5,15 @@ import { JWT } from "google-auth-library";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import sheetApiContext from "../Context/sheetApiContext";
+import { useRouter } from "next/router";
 export default function App({ Component, pageProps }) {
   const [doc, setDoc] = useState(null);
   const [dataSheet, setDataSheet] = useState(null);
   const [poles, setPoles] = useState(null);
+  const [user, setUser] = useState(null);
+  const router = useRouter();
 
   const loadDoc = async () => {
     console.log("Loading doc and data...");
@@ -36,6 +39,16 @@ export default function App({ Component, pageProps }) {
     });
   };
 
+  const Authorize = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user && router.asPath !== "/auth/login") {
+      router.replace("/auth/login");
+    } else {
+      loadDoc();
+      setUser(user);
+    }
+  };
+
   const loadPoles = async () => {
     doc.sheetsByIndex[1].getRows().then((data) => {
       setPoles(data);
@@ -43,15 +56,23 @@ export default function App({ Component, pageProps }) {
   };
 
   useEffect(() => {
-    loadDoc();
+    Authorize();
   }, []);
 
-  if (!doc) return <Loader />;
-  
+  if (!doc && router.asPath !== "/auth/login") return <Loader />;
+
   return (
     <sheetApiContext.Provider value={{ doc, setDoc }}>
       <DataContext.Provider
-        value={{ dataSheet, poles, setPoles, setDataSheet, loadPoles, doc }}
+        value={{
+          dataSheet,
+          poles,
+          setPoles,
+          setDataSheet,
+          loadPoles,
+          doc,
+          user,
+        }}
       >
         <ToastContainer />
         <Component {...pageProps} />
