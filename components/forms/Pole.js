@@ -12,6 +12,8 @@ import InputController from "./InputController";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import Loader from "../loader";
+import axios from 'axios';
+
 
 import Head from "next/head";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -65,7 +67,7 @@ const Pole = ({ isEditing = null }) => {
     {
       type: "text",
       label: "Pole Land Mark/ Location",
-      
+
     },
     {
       type: "select",
@@ -142,7 +144,7 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("Nos."),
           value: item.get("Nos."),
         })),
-    },{
+    }, {
       type: "select",
       label: "Make",
       category: "LED",
@@ -152,7 +154,7 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("Make"),
           value: item.get("Make"),
         })),
-    },{
+    }, {
       type: "select",
       label: "Arm Type",
       category: "LED",
@@ -162,7 +164,7 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("Arm Type"),
           value: item.get("Arm Type"),
         })),
-    },{
+    }, {
       type: "select",
       label: "Arm Length",
       category: "LED",
@@ -172,7 +174,7 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("Arm Length"),
           value: item.get("Arm Length"),
         })),
-    },{
+    }, {
       type: "select",
       label: "CCMS/ Timer",
       category: "Feeder Panel",
@@ -182,7 +184,7 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("CCMS/ Timer"),
           value: item.get("CCMS/ Timer"),
         })),
-    },{
+    }, {
       type: "select",
       label: "CCMS Rating (KW)",
       category: "Feeder Panel",
@@ -192,7 +194,7 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("CCMS Rating (KW)"),
           value: item.get("CCMS Rating (KW)"),
         })),
-    },{
+    }, {
       type: "select",
       label: "Coil",
       category: "Feeder Panel",
@@ -202,7 +204,7 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("Coil"),
           value: item.get("Coil"),
         })),
-    },{
+    }, {
       type: "select",
       label: "GI Pipe",
       category: "Feeder Panel",
@@ -212,11 +214,11 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("GI Pipe"),
           value: item.get("GI Pipe"),
         })),
-    },{
+    }, {
       type: "text",
       label: "Cable length New Installed (m)",
       category: "Cable"
-    },{
+    }, {
       type: "select",
       label: "Cable type (OH/UG)",
       category: "Cable",
@@ -226,7 +228,7 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("Cable type (OH/UG)"),
           value: item.get("Cable type (OH/UG)"),
         })),
-    },{
+    }, {
       type: "select",
       label: "Cable Rating (Sq.mm)",
       category: "Cable",
@@ -236,7 +238,7 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("Cable Rating (Sq.mm)"),
           value: item.get("Cable Rating (Sq.mm)"),
         })),
-    },{
+    }, {
       type: "select",
       label: "Suspension Clamp",
       category: "Cable",
@@ -246,7 +248,7 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("Suspension Clamp"),
           value: item.get("Suspension Clamp"),
         })),
-    },{
+    }, {
       type: "select",
       label: "Dead End Clamp",
       category: "Cable",
@@ -256,7 +258,7 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("Dead End Clamp"),
           value: item.get("Dead End Clamp"),
         })),
-    },{
+    }, {
       type: "select",
       label: "Eye-hook",
       category: "LED",
@@ -280,6 +282,82 @@ const Pole = ({ isEditing = null }) => {
       label: "Image",
     },
   ]);
+
+  // useEffect(()=>{
+  //   console.log(values.Image, '.......');
+  //   const uploadFile = async () => {
+  //     if (values.Image) {
+  //       console.log(values.Image, '.......');
+
+  //       const formData = new FormData();
+
+  //       formData.append('file', values.Image); // 'file' should match the key expected by the backend
+
+  //       try {
+
+  //         const response = await axios.post('http://localhost:3000/api/upload', formData, {
+  //           headers: {
+  //             'Content-Type': 'multipart/form-data',
+  //           },
+  //         });
+  //         console.log('File uploaded successfully', response, 'response');
+
+  //         // setMessage('File uploaded successfully');
+  //       } catch (error) {
+  //         console.error('Error uploading file:', error);
+  //         // setMessage('File upload failed');
+  //       }
+  //     }
+  //   };
+
+  //   // Call the function
+  //   uploadFile();
+
+  // }, [values.Image])
+
+  useEffect(() => {
+    if (values.Image) {
+      const uploadFile = async () => {
+        console.log(values.Image, '.......');
+        console.log(values.Image.File,'+++++++++++++++++++++++++++=');
+        
+        // const formData = new FormData();
+        // formData.append('file', values.Image);
+        // try {
+        //   await axios.post('http://localhost:3000/api/upload', formData, {
+        //     headers: { 'Content-Type': 'multipart/form-data' },
+        //   });
+        //   toast.success('File uploaded successfully');
+        // } catch (error) {
+        //   toast.error('Error uploading file');
+        // }
+      };
+
+      uploadFile();
+    }
+  }, [values.Image]);
+
+
+  const handleFileUpload = async () => {
+    if (!values.Image) return;
+
+    const formData = new FormData();
+    formData.append('files', values.Image);
+
+    try {
+      await axios.post('http://localhost:3000/api/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      toast.success('File uploaded successfully');
+    } catch (error) {
+      toast.error('Error uploading file');
+    }
+  };
+
+  // Call this function in useEffect when values.Image changes
+  useEffect(() => {
+    handleFileUpload();
+  }, [values.Image]);
 
   useEffect(
     (lat, long) => {
@@ -493,7 +571,7 @@ const Pole = ({ isEditing = null }) => {
                       type={item.type}
                       value={values[item.label]}
                       onChange={(e) =>
-                        setValues({ ...values, [item.label]: e.target.value })
+                        setValues({ ...values, [item.label]: item.type === "file" ? e.target.files[0] : e.target.value })
                       }
                     />
                   ))
