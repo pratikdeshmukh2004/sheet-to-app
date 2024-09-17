@@ -3,6 +3,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+
 const LoginForm = () => {
   const router = useRouter();
 
@@ -113,7 +114,7 @@ const LoginForm = () => {
 
 const authProvider = () => {
   return (
-    <GoogleOAuthProvider clientId="70658986281-8p73mimd3ofglgu85dqgaa3eo0u05bk1.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID}>
       <LoginForm />
     </GoogleOAuthProvider>
   );
