@@ -6,7 +6,6 @@ import sheetApiContext from "@/Context/sheetApiContext";
 import DataContext from "@/Context/dataContext";
 import Header from "@/components/Header";
 
-
 export default function Home() {
   const { dataSheet, user } = useContext(DataContext);
 
@@ -30,7 +29,9 @@ export default function Home() {
             (row) =>
               row.get("DISTRICT") && (
                 <Link href={`/ulb?district=${row.get("DISTRICT")}`}>
-                  <li className="border-b hover:bg-gray-100 rounded-t-lg border-gray-300 py-3 flex">
+                  <li
+                    className="border-b hover:bg-gray-100 rounded-t-lg border-gray-300 py-3 flex"
+                  >
                     <h4 className="ml-2">{row.get("DISTRICT")}</h4>
                     <FontAwesomeIcon
                       className="ml-auto text-sm mt-2 mr-5"

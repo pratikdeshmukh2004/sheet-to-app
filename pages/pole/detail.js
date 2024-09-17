@@ -19,7 +19,9 @@ export default function Pole() {
   const { poles, loadPoles } = useContext(DataContext);
   const [loading, setLoading] = useState(false);
   const params = useSearchParams();
-  const row = poles?.find((row) => row._rowNumber == params.get("pole"));
+  const row = poles?.find((row) => row._rowNumber == params.get("pole")) || {
+    get: () => {},
+  };
   const router = useRouter();
   const district = useSearchParams()?.get("district");
   const categories = {
@@ -65,11 +67,10 @@ export default function Pole() {
       console.log(row, "deleted....");
       loadPoles();
       setLoading(false);
-      router.push(
-        "/switch?area=" +
-          row.get("Area Code") +
-          "&switch=" +
-          row.get("Switch No.")
+      router.replace(
+        `/pole?district=${row.get("District")}&ulb=${row.get(
+          "ULB Name"
+        )}&ward=${row.get("Ward No")}`
       );
     });
   };
@@ -93,22 +94,44 @@ export default function Pole() {
           />
           <Link
             className="hover:text-blue-500"
-            href={`/ulb?district=${district}`}
+            href={`/ulb?district=${row?.get("District")}`}
           >
-            {district}
+            {row.get("District")}
           </Link>
           <FontAwesomeIcon
             className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
             icon={faChevronRight}
           />
+          <Link
+            className="hover:text-blue-500"
+            href={`/ward?district=${row?.get("District")}&ulb=${row?.get(
+              "ULB Name"
+            )}`}
+          >
+            {row.get("ULB Name")}
+          </Link>
           <FontAwesomeIcon
             className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
             icon={faChevronRight}
           />
-          <b>{params.get("pole")}</b>
+          <Link
+            className="hover:text-blue-500"
+            href={`/pole?district=${row?.get("District")}&ulb=${row?.get(
+              "ULB Name"
+            )}&ward=${row?.get("Ward No")}`}
+          >
+            {row.get("Ward No")}
+          </Link>
+          <FontAwesomeIcon
+            className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
+            icon={faChevronRight}
+          />
+          <b>{row.get("Pole Land Mark/ Location")}</b>
         </h4>
         <div className="py-10 flex gap-5 border-b border-gray-200">
-          <h4 className="text-2xl font-bold">{params.get("pole")}</h4>
+          <h4 className="text-2xl font-bold">
+            {row.get("Pole Land Mark/ Location")}
+          </h4>
           <Link
             className="bg-orange-600 ml-auto py-2 text-md text-white font-bold rounded-lg px-3"
             href={`/pole/edit?pole=${params.get("pole")}`}
@@ -126,7 +149,7 @@ export default function Pole() {
             Delete
           </button>
         </div>
-        
+
         <div className="py-5">
           {row &&
             Object.keys(categories).map((category, index) => (

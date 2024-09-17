@@ -12,8 +12,7 @@ import InputController from "./InputController";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import Loader from "../loader";
-import axios from 'axios';
-
+import axios from "axios";
 
 import Head from "next/head";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -26,6 +25,13 @@ const Pole = ({ isEditing = null }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [positoin, setPosition] = useState({ lat: "", long: "" });
+  const [image, setImage] = useState(null);
+  let backURL = `/pole?district=${params.get("district")}&ulb=${params.get(
+    "ulb"
+  )}&ward=${params.get("ward")}`;
+  if (isEditing) {
+    backURL = `/pole?district=${values["District"]}&ulb=${values["ULB Name"]}&ward=${values["Ward No"]}`;
+  }
   const [form, setForm] = useState([
     {
       type: "select",
@@ -67,7 +73,6 @@ const Pole = ({ isEditing = null }) => {
     {
       type: "text",
       label: "Pole Land Mark/ Location",
-
     },
     {
       type: "select",
@@ -105,12 +110,12 @@ const Pole = ({ isEditing = null }) => {
     {
       type: "text",
       label: "Lattitude",
-      category: "Pole Details"
+      category: "Pole Details",
     },
     {
       type: "text",
       label: "Longitude",
-      category: "Pole Details"
+      category: "Pole Details",
     },
     {
       type: "select",
@@ -144,7 +149,8 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("Nos."),
           value: item.get("Nos."),
         })),
-    }, {
+    },
+    {
       type: "select",
       label: "Make",
       category: "LED",
@@ -154,7 +160,8 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("Make"),
           value: item.get("Make"),
         })),
-    }, {
+    },
+    {
       type: "select",
       label: "Arm Type",
       category: "LED",
@@ -164,7 +171,8 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("Arm Type"),
           value: item.get("Arm Type"),
         })),
-    }, {
+    },
+    {
       type: "select",
       label: "Arm Length",
       category: "LED",
@@ -174,7 +182,8 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("Arm Length"),
           value: item.get("Arm Length"),
         })),
-    }, {
+    },
+    {
       type: "select",
       label: "CCMS/ Timer",
       category: "Feeder Panel",
@@ -184,7 +193,8 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("CCMS/ Timer"),
           value: item.get("CCMS/ Timer"),
         })),
-    }, {
+    },
+    {
       type: "select",
       label: "CCMS Rating (KW)",
       category: "Feeder Panel",
@@ -194,7 +204,8 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("CCMS Rating (KW)"),
           value: item.get("CCMS Rating (KW)"),
         })),
-    }, {
+    },
+    {
       type: "select",
       label: "Coil",
       category: "Feeder Panel",
@@ -204,7 +215,8 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("Coil"),
           value: item.get("Coil"),
         })),
-    }, {
+    },
+    {
       type: "select",
       label: "GI Pipe",
       category: "Feeder Panel",
@@ -214,11 +226,13 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("GI Pipe"),
           value: item.get("GI Pipe"),
         })),
-    }, {
+    },
+    {
       type: "text",
       label: "Cable length New Installed (m)",
-      category: "Cable"
-    }, {
+      category: "Cable",
+    },
+    {
       type: "select",
       label: "Cable type (OH/UG)",
       category: "Cable",
@@ -228,7 +242,8 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("Cable type (OH/UG)"),
           value: item.get("Cable type (OH/UG)"),
         })),
-    }, {
+    },
+    {
       type: "select",
       label: "Cable Rating (Sq.mm)",
       category: "Cable",
@@ -238,7 +253,8 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("Cable Rating (Sq.mm)"),
           value: item.get("Cable Rating (Sq.mm)"),
         })),
-    }, {
+    },
+    {
       type: "select",
       label: "Suspension Clamp",
       category: "Cable",
@@ -248,7 +264,8 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("Suspension Clamp"),
           value: item.get("Suspension Clamp"),
         })),
-    }, {
+    },
+    {
       type: "select",
       label: "Dead End Clamp",
       category: "Cable",
@@ -258,7 +275,8 @@ const Pole = ({ isEditing = null }) => {
           label: item.get("Dead End Clamp"),
           value: item.get("Dead End Clamp"),
         })),
-    }, {
+    },
+    {
       type: "select",
       label: "Eye-hook",
       category: "LED",
@@ -283,81 +301,27 @@ const Pole = ({ isEditing = null }) => {
     },
   ]);
 
-  // useEffect(()=>{
-  //   console.log(values.Image, '.......');
-  //   const uploadFile = async () => {
-  //     if (values.Image) {
-  //       console.log(values.Image, '.......');
-
-  //       const formData = new FormData();
-
-  //       formData.append('file', values.Image); // 'file' should match the key expected by the backend
-
-  //       try {
-
-  //         const response = await axios.post('http://localhost:3000/api/upload', formData, {
-  //           headers: {
-  //             'Content-Type': 'multipart/form-data',
-  //           },
-  //         });
-  //         console.log('File uploaded successfully', response, 'response');
-
-  //         // setMessage('File uploaded successfully');
-  //       } catch (error) {
-  //         console.error('Error uploading file:', error);
-  //         // setMessage('File upload failed');
-  //       }
-  //     }
-  //   };
-
-  //   // Call the function
-  //   uploadFile();
-
-  // }, [values.Image])
-
-  useEffect(() => {
-    if (values.Image) {
-      const uploadFile = async () => {
-        console.log(values.Image, '.......');
-        console.log(values.Image.File,'+++++++++++++++++++++++++++=');
-        
-        // const formData = new FormData();
-        // formData.append('file', values.Image);
-        // try {
-        //   await axios.post('http://localhost:3000/api/upload', formData, {
-        //     headers: { 'Content-Type': 'multipart/form-data' },
-        //   });
-        //   toast.success('File uploaded successfully');
-        // } catch (error) {
-        //   toast.error('Error uploading file');
-        // }
-      };
-
-      uploadFile();
-    }
-  }, [values.Image]);
-
-
   const handleFileUpload = async () => {
-    if (!values.Image) return;
-
+    if (!image) return;
+    setLoading(true);
     const formData = new FormData();
-    formData.append('files', values.Image);
-
+    formData.append("file", image);
     try {
-      await axios.post('http://localhost:3000/api/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      const resp = await axios.post("/api/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
-      toast.success('File uploaded successfully');
+      setValues({ ...values, "Image URL": resp.data.fileUrl });
+      toast.success("File uploaded successfully");
     } catch (error) {
-      toast.error('Error uploading file');
+      toast.error("Error uploading file");
     }
+    setLoading(false);
   };
 
   // Call this function in useEffect when values.Image changes
   useEffect(() => {
     handleFileUpload();
-  }, [values.Image]);
+  }, [image]);
 
   useEffect(
     (lat, long) => {
@@ -443,58 +407,20 @@ const Pole = ({ isEditing = null }) => {
         theme: "light",
       });
       setValues({});
-      // loadPoles();
+      loadPoles();
       setLoading(false);
-      router.back();
+      router.replace(backURL);
     });
   };
 
   const updatePole = (e) => {
     e.preventDefault();
-    const list_of_form_fittings = form
-      .filter((item) => item.label.includes("Type Of Fitting"))
-      .map((item) => item.label);
-    const list_of_form_wattage = form
-      .filter((item) => item.label.includes("Wattage"))
-      .map((item) => item.label);
-    const new_values = {};
-    Object.keys(values).map((item) => {
-      if (item.includes("Type Of Fitting") || item.includes("Wattage")) {
-        if (
-          list_of_form_fittings.includes(item) ||
-          list_of_form_wattage.includes(item)
-        ) {
-          new_values[item] = values[item];
-        }
-      } else {
-        new_values[item] = values[item];
-      }
-    });
-    if (
-      Object.keys(new_values).length !== Object.keys(form).length &&
-      Object.keys(new_values).length !== Object.keys(form).length - 1 &&
-      values?.Remarks == ""
-    ) {
-      console.log("Please fill all the fields....");
-      toast.warning("Please fill all the fields.", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      return;
-    }
     setLoading(true);
     const row = poles?.find((row) => row._rowNumber == params.get("pole"));
-    console.log(new_values, "values...");
     Object.keys(row.toObject()).map((item) => {
       row.assign({ [item]: "" });
     });
-    row.assign(new_values);
+    row.assign(values);
     row.save().then((data) => {
       loadPoles();
       toast.success("Pole updated successfully.", {
@@ -506,12 +432,14 @@ const Pole = ({ isEditing = null }) => {
         draggable: true,
         theme: "light",
       });
-      router.back();
     });
+    setLoading(false);
+    router.replace(backURL);
   };
 
   return (
     <div>
+      {loading && <Loader />}
       <Head>
         <title>{isEditing ? "Edit Pole" : "New Pole"}</title>
       </Head>
@@ -522,11 +450,20 @@ const Pole = ({ isEditing = null }) => {
       </div>
       <form className="mx-10 lg:mx-[27%]">
         {[...new Set(form.map((ele) => ele.category))].map((category) => (
-          <Disclosure as="div" className="my-5" defaultOpen={!category || category == "Pole Details"}>
+          <Disclosure
+            as="div"
+            className="my-5"
+            defaultOpen={!category || category == "Pole Details"}
+          >
             <DisclosureButton className="group flex w-full items-center justify-between">
               <div className="text-md flex px-1 text-gray-700 justify-between w-full font-medium ">
                 <h4>{category}</h4>
-                {category && <FontAwesomeIcon className="ml-auto mt-1 text-gray-500" icon={faChevronDown} />}
+                {category && (
+                  <FontAwesomeIcon
+                    className="ml-auto mt-1 text-gray-500"
+                    icon={faChevronDown}
+                  />
+                )}
               </div>
             </DisclosureButton>
             <DisclosurePanel transition className="px-3 border rounded my-1">
@@ -570,9 +507,15 @@ const Pole = ({ isEditing = null }) => {
                       label={item.label}
                       type={item.type}
                       value={values[item.label]}
-                      onChange={(e) =>
-                        setValues({ ...values, [item.label]: item.type === "file" ? e.target.files[0] : e.target.value })
-                      }
+                      onChange={(e) => {
+                        if (item.type == "file") {
+                          setImage(e.target.files[0]);
+                        }
+                        setValues({
+                          ...values,
+                          [item.label]: e.target.value,
+                        });
+                      }}
                     />
                   ))
               )}
@@ -591,7 +534,7 @@ const Pole = ({ isEditing = null }) => {
         </button>
 
         <button
-          onClick={() => router.replace(`/pole?district=${params.get("district")}&ulb=${params.get("ulb")}&ward=${params.get("ward")}`)}
+          onClick={() => router.replace(backURL)}
           className="border border-gray-400 py-2 text-md text-gray-800 font-bold rounded-lg px-5"
         >
           Cancel
