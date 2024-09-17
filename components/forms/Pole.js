@@ -443,12 +443,12 @@ const Pole = ({ isEditing = null }) => {
       <Head>
         <title>{isEditing ? "Edit Pole" : "New Pole"}</title>
       </Head>
-      <div className="px-10 lg:px-[27%] bg-[#24282d]">
+      <div className="px-5 lg:px-[27%] bg-[#24282d]">
         <h2 className="text-2xl py-3 font-bold text-white">
           {isEditing ? "Edit" : "New"} Pole
         </h2>
       </div>
-      <form className="mx-10 lg:mx-[27%]">
+      <form className="mx-3 lg:mx-[27%]">
         {[...new Set(form.map((ele) => ele.category))].map((category) => (
           <Disclosure
             as="div"

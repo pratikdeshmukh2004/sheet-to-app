@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faArrowLeft,
   faArrowRight,
   faChevronRight,
   faPencil,
@@ -14,6 +15,7 @@ import DataContext from "@/Context/dataContext";
 import { useRouter } from "next/router";
 import Loader from "@/components/loader";
 import Header from "@/components/Header";
+import Image from "next/image";
 
 export default function Pole() {
   const { poles, loadPoles } = useContext(DataContext);
@@ -129,9 +131,17 @@ export default function Pole() {
           <b>{row.get("Pole Land Mark/ Location")}</b>
         </h4>
         <div className="py-10 flex gap-5 border-b border-gray-200">
-          <h4 className="text-2xl font-bold">
-            {row.get("Pole Land Mark/ Location")}
-          </h4>
+          <Link
+            className="bg-orange-600 ml-auto py-2 text-md text-white font-bold rounded-lg px-3"
+            href={`/pole?district=${row?.get("District")}&ulb=${row?.get(
+              "ULB Name"
+            )}&ward=${row?.get("Ward No")}`}
+          >
+            <button>
+              <FontAwesomeIcon className="mr-2" icon={faArrowLeft} />
+              Back
+            </button>
+          </Link>
           <Link
             className="bg-orange-600 ml-auto py-2 text-md text-white font-bold rounded-lg px-3"
             href={`/pole/edit?pole=${params.get("pole")}`}
@@ -179,6 +189,9 @@ export default function Pole() {
                 {/* Add line after each category except the last one */}
               </div>
             ))}
+          <a target="_blank" href={row.get("Image URL")} download>
+            <Image src={row.get("Image URL")} width={400} height={400} />
+          </a>
         </div>
       </div>
     </>

@@ -1,6 +1,6 @@
-import { google } from 'googleapis';
-import fileUpload from 'express-fileupload';
-import { Readable } from 'stream';
+import { google } from "googleapis";
+import fileUpload from "express-fileupload";
+import { Readable } from "stream";
 
 // Disable Next.js's default body parsing
 export const config = {
@@ -13,16 +13,18 @@ export const config = {
 const fileUploadMiddleware = fileUpload();
 
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
+  if (req.method === "POST") {
     // Apply the file upload middleware
     fileUploadMiddleware(req, res, async (err) => {
       if (err) {
-        return res.status(500).json({ error: `Error processing file upload: ${err.message}` });
+        return res
+          .status(500)
+          .json({ error: `Error processing file upload: ${err.message}` });
       }
 
       // Ensure a file is uploaded
       if (!req.files || Object.keys(req.files).length === 0) {
-        return res.status(400).json({ error: 'No files were uploaded.' });
+        return res.status(400).json({ error: "No files were uploaded." });
       }
 
       // Get the uploaded file
@@ -33,13 +35,13 @@ export default async function handler(req, res) {
         const auth = new google.auth.GoogleAuth({
           credentials: {
             client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-            private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+            private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
           },
-          scopes: ['https://www.googleapis.com/auth/drive.file'], // Access to Google Drive
+          scopes: ["https://www.googleapis.com/auth/drive.file"], // Access to Google Drive
         });
 
         // Initialize Google Drive client
-        const drive = google.drive({ version: 'v3', auth });
+        const drive = google.drive({ version: "v3", auth });
 
         // Convert the uploaded file's buffer to a readable stream
         const bufferStream = new Readable();
@@ -59,27 +61,29 @@ export default async function handler(req, res) {
         const file = await drive.files.create({
           resource: fileMetadata,
           media: media,
-          fields: 'id',
+          fields: "id",
         });
 
         // Make the file public (if needed)
         await drive.permissions.create({
           fileId: file.data.id,
           requestBody: {
-            role: 'reader',
-            type: 'anyone',
+            role: "reader",
+            type: "anyone",
           },
         });
 
         // Generate the public URL
-        const publicUrl = `https://drive.google.com/thumbnail?id=${file.data.id}&sz=w1000`;
+        const publicUrl = `https://lh3.googleusercontent.com/d/${file.data.id}`;
 
         // Send the public URL in response
         res.status(200).json({ fileUrl: publicUrl });
       } catch (error) {
         console.log(error);
         // Catch any error and send a response
-        res.status(500).json({ error: `Error uploading file: ${error.message}` });
+        res
+          .status(500)
+          .json({ error: `Error uploading file: ${error.message}` });
       }
     });
   } else {

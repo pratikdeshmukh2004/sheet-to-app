@@ -17,7 +17,7 @@ export default function Pole() {
   const params = useSearchParams();
   return (
     <>
-      <div className="bg-[#24282d] hidden lg:block">
+      <div className="bg-[#24282d]">
         <div className="mx-5 lg:mx-[27%]">
           <Header />
         </div>

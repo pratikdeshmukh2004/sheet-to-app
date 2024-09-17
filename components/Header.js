@@ -11,7 +11,7 @@ const Header = () => {
   };
 
   return (
-    <div className="flex py-5 lg:relative absolute top-[10px] right-[20px] justify-between">
+    <div className="flex py-5 lg:relative absolute top-[0px] right-[20px] justify-between">
       <div className="flex">
         <img src="/logo.webp" className="w-6 hidden lg:block h-6 mr-2" />
         <h2 className="text-lg hidden lg:block text-white font-bold font">
