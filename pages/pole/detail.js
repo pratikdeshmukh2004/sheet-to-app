@@ -39,7 +39,7 @@ export default function Pole() {
       "Pole type",
       "Pole arrangement",
       "Pole Height",
-      "Old / New",
+      "New / Replace",
     ],
     "Power & Electrical Details": [
       "CCMS/Timer",
@@ -132,12 +132,12 @@ export default function Pole() {
         </h4>
         <div className="py-10 flex gap-5 border-b border-gray-200">
           <Link
-            className="bg-orange-600 ml-auto py-2 text-md text-white font-bold rounded-lg px-3"
+            className="bg-orange-600 py-2 text-md text-white font-bold rounded-lg px-3"
             href={`/pole?district=${row?.get("District")}&ulb=${row?.get(
               "ULB Name"
             )}&ward=${row?.get("Ward No")}`}
           >
-            <button>
+            <button className="start-0">
               <FontAwesomeIcon className="mr-2" icon={faArrowLeft} />
               Back
             </button>

@@ -119,13 +119,13 @@ const Pole = ({ isEditing = null }) => {
     },
     {
       type: "select",
-      label: "Old / New",
+      label: "New / Replace",
       category: "LED",
       options: dataSheet
-        ?.filter((item) => item.get("Old / New"))
+        ?.filter((item) => item.get("New / Replace"))
         ?.map((item) => ({
-          label: item.get("Old / New"),
-          value: item.get("Old / New"),
+          label: item.get("New / Replace"),
+          value: item.get("New / Replace"),
         })),
     },
     {
@@ -279,12 +279,23 @@ const Pole = ({ isEditing = null }) => {
     {
       type: "select",
       label: "Eye-hook",
-      category: "LED",
+      category: "Cable",
       options: dataSheet
         ?.filter((item) => item.get("Eye-hook"))
         ?.map((item) => ({
           label: item.get("Eye-hook"),
           value: item.get("Eye-hook"),
+        })),
+    },
+    {
+      type: "select",
+      label: "Piercing Connector",
+      category: "Cable",
+      options: dataSheet
+        ?.filter((item) => item.get("Piercing Connector"))
+        ?.map((item) => ({
+          label: item.get("Piercing Connector"),
+          value: item.get("Piercing Connector"),
         })),
     },
     {
@@ -300,7 +311,6 @@ const Pole = ({ isEditing = null }) => {
       label: "Image",
     },
   ]);
-
   const handleFileUpload = async () => {
     if (!image) return;
     setLoading(true);
@@ -418,6 +428,7 @@ const Pole = ({ isEditing = null }) => {
     setLoading(true);
     const row = poles?.find((row) => row._rowNumber == params.get("pole"));
     Object.keys(row.toObject()).map((item) => {
+      // if (item == "Image URL") return;
       row.assign({ [item]: "" });
     });
     row.assign(values);

@@ -1,6 +1,4 @@
-import { google } from "googleapis";
 import fileUpload from "express-fileupload";
-import { Readable } from "stream";
 
 // Disable Next.js's default body parsing
 export const config = {
@@ -31,59 +29,36 @@ export default async function handler(req, res) {
       const uploadedFile = req.files.file;
 
       try {
-        // Initialize Google Drive API with Service Account credentials
-        const auth = new google.auth.GoogleAuth({
-          credentials: {
-            client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-            private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+        // Convert the file buffer to base64 (fileData)
+        const fileData = `data:${uploadedFile.mimetype};base64,${uploadedFile.data.toString('base64')}`;
+        const fileName = uploadedFile.name;
+        const mimeType = uploadedFile.mimetype;
+
+        // Make the API call to Google Apps Script
+        const response = await fetch(process.env.GOOGLE_SCRIPT_API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
-          scopes: ["https://www.googleapis.com/auth/drive.file"], // Access to Google Drive
+          body: JSON.stringify({
+            fileData: fileData,
+            fileName: fileName,
+            mimeType: mimeType,
+          }),
         });
 
-        // Initialize Google Drive client
-        const drive = google.drive({ version: "v3", auth });
+        if (!response.ok) {
+          throw new Error(`Failed to call API: ${response.statusText}`);
+        }
 
-        // Convert the uploaded file's buffer to a readable stream
-        const bufferStream = new Readable();
-        bufferStream.push(uploadedFile.data); // Push file buffer into the stream
-        bufferStream.push(null); // No more data
+        const result = await response.json();
 
-        // Upload the file to Google Drive
-        const fileMetadata = {
-          name: uploadedFile.name,
-        };
-
-        const media = {
-          mimeType: uploadedFile.mimetype,
-          body: bufferStream, // Use the readable stream here
-        };
-
-        const file = await drive.files.create({
-          resource: fileMetadata,
-          media: media,
-          fields: "id",
-        });
-
-        // Make the file public (if needed)
-        await drive.permissions.create({
-          fileId: file.data.id,
-          requestBody: {
-            role: "reader",
-            type: "anyone",
-          },
-        });
-
-        // Generate the public URL
-        const publicUrl = `https://lh3.googleusercontent.com/d/${file.data.id}`;
-
-        // Send the public URL in response
-        res.status(200).json({ fileUrl: publicUrl });
+        // Send the result back to the client
+        res.status(200).json(result);
       } catch (error) {
         console.log(error);
         // Catch any error and send a response
-        res
-          .status(500)
-          .json({ error: `Error uploading file: ${error.message}` });
+        res.status(500).json({ error: `Error uploading file: ${error.message}` });
       }
     });
   } else {
