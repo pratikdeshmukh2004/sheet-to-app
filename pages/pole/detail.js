@@ -23,10 +23,10 @@ export default function Pole() {
   const district = useSearchParams()?.get("district");
   const categories = {
     "Location Information": [
-      "district",
+      "District",
       "ULB Name",
       "Ward No",
-      "Pole Land Mark/Location",
+      "Pole Land Mark/ Location",
       "Lattitude",
       "Longitude",
     ],
@@ -34,7 +34,7 @@ export default function Pole() {
       "Pole type",
       "Pole arrangement",
       "Pole Height",
-      "Old / New",
+      "New / Replace",
     ],
     "Power & Electrical Details": [
       "CCMS/Timer",
@@ -46,6 +46,7 @@ export default function Pole() {
       "Cable type",
       "Cable Rating (Sq.mm)",
       "Cable length New Installed (m)",
+      "Piercing Connector"
     ],
     "Arm Details": ["Arm Type", "Arm Length"],
     "Accessories & Fixtures": [
@@ -100,23 +101,39 @@ export default function Pole() {
           />
           <Link
             className="hover:text-blue-500"
-            href={`/ulb?district=${district}`}
+            href={`/ulb?district=${row?.get("District")}`}
           >
-            {district}
+            {row?.get("District")}
           </Link>
           <FontAwesomeIcon
             className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
             icon={faChevronRight}
           />
+          <Link
+            className="hover:text-blue-500"
+            href={`/ulb?district=${row?.get("District")}&ulb=${row?.get('ULB Name')}`}
+          >
+            {row?.get("ULB Name")}
+          </Link>
           <FontAwesomeIcon
             className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
             icon={faChevronRight}
           />
-          <b>{params.get("pole")}</b>
+           <Link
+            className="hover:text-blue-500"
+            href={`/ward?district=${row?.get("District")}&ulb=${row?.get('ULB Name')}`}
+          >
+            {row?.get("Ward No")}
+          </Link>
+          <FontAwesomeIcon
+            className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
+            icon={faChevronRight}
+          />
+          <b className="text-xs font-medium">{row?.get('Pole Land Mark/ Location')}</b>
         </h4>
         <div className="py-10 flex gap-5 border-b border-gray-200">
-          <h4 className="text-2xl font-bold">{params.get("pole")}</h4>
-          <Link
+          <h4 className="text-xl font-bold">{row?.get('Pole Land Mark/ Location')}</h4>
+           <Link
             className="bg-orange-600 ml-auto py-2 text-md text-white font-bold rounded-lg px-3"
             href={`/pole/edit?pole=${params.get("pole")}`}
           >
