@@ -28,10 +28,10 @@ export default function Pole() {
   const district = useSearchParams()?.get("district");
   const categories = {
     "Location Information": [
-      "district",
+      "District",
       "ULB Name",
       "Ward No",
-      "Pole Land Mark/Location",
+      "Pole Land Mark/ Location",
       "Lattitude",
       "Longitude",
     ],
@@ -42,13 +42,13 @@ export default function Pole() {
       "New / Replace",
     ],
     "Power & Electrical Details": [
-      "CCMS/Timer",
+      "CCMS/ Timer ",
       "CCMS Rating (KW)",
       "Rating (W)",
       "Nos.",
     ],
     "Cable Specifications": [
-      "Cable type",
+      "Cable type (OH/UG)",
       "Cable Rating (Sq.mm)",
       "Cable length New Installed (m)",
     ],
