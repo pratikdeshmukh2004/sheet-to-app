@@ -24,7 +24,7 @@ export default function App({ Component, pageProps }) {
     });
 
     const doc = new GoogleSpreadsheet(
-      "17nY1MKZEHCpWJU3zcx9hikSKUKdz7MuWm_Y4mE9fN0M",
+      process.env.GOOGLE_SPREADSHEET_ID,
       serviceAccountAuth
     );
     await doc.loadInfo();
