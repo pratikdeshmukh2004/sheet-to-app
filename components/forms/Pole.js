@@ -313,7 +313,7 @@ const Pole = ({ isEditing = null }) => {
   ]);
   const handleFileUpload = async () => {
     if (!image) return;
-    setLoading(true);
+    toast.info("Uploading file...");
     const formData = new FormData();
     formData.append("file", image);
     try {
@@ -325,7 +325,6 @@ const Pole = ({ isEditing = null }) => {
     } catch (error) {
       toast.error("Error uploading file");
     }
-    setLoading(false);
   };
 
   // Call this function in useEffect when values.Image changes
