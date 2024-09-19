@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import Loader from "../loader";
 import axios from "axios";
+import imageCompression from "browser-image-compression"; // Image compression library
 
 import Head from "next/head";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -26,6 +27,7 @@ const Pole = ({ isEditing = null }) => {
   const [loading, setLoading] = useState(false);
   const [positoin, setPosition] = useState({ lat: "", long: "" });
   const [image, setImage] = useState(null);
+  const MAX_RETRIES = 5; // Max retries for the upload
   let backURL = `/pole?district=${params.get("district")}&ulb=${params.get(
     "ulb"
   )}&ward=${params.get("ward")}`;
@@ -311,19 +313,62 @@ const Pole = ({ isEditing = null }) => {
       label: "Image",
     },
   ]);
+
   const handleFileUpload = async () => {
     if (!image) return;
-    toast.info("Uploading file...");
-    const formData = new FormData();
-    formData.append("file", image);
+
     try {
-      const resp = await axios.post("/api/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+      toast.info("Compressing file...");
+      // Compress the image
+      const options = {
+        maxSizeMB: 5, // Set max size in MB
+        useWebWorker: true, // Use multi-threading for compression
+      };
+
+      // Compress the image
+      const compressedImage = await imageCompression(image, options);
+
+      // Create a new File object to preserve the file name and type
+      const compressedFile = new File([compressedImage], image.name, {
+        type: image.type, // Keep the original MIME type
       });
-      setValues({ ...values, "Image URL": resp.data.fileUrl });
-      toast.success("File uploaded successfully");
+
+      toast.info("Uploading file...");
+      // Prepare form data with the compressed image file
+      const formData = new FormData();
+      formData.append("file", compressedFile);
+
+      // Retry logic
+      let attempts = 0;
+      let success = false;
+      let response = null;
+
+      while (attempts < MAX_RETRIES && !success) {
+        response = await axios.post("/api/upload", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        if (!response.error) {
+          success = true;
+          continue;
+        }
+        toast.error(`Error uploading file: ${response.error}`);
+        attempts++;
+        toast.info(`Retrying upload (${attempts}/${MAX_RETRIES})...`);
+
+        // If max attempts are reached, throw an error
+        if (attempts === MAX_RETRIES) {
+          toast.error(`Max upload attempts reached.`);
+        }
+      }
+
+      // If upload succeeds
+      if (success) {
+        setValues({ ...values, "Image URL": response.data.fileUrl });
+        toast.success("File uploaded successfully");
+      }
     } catch (error) {
-      toast.error("Error uploading file");
+      console.error("Error uploading file:", error);
+      toast.error("Error uploading file after multiple attempts.");
     }
   };
 
@@ -403,7 +448,7 @@ const Pole = ({ isEditing = null }) => {
   const createNewPole = async (e) => {
     e.preventDefault();
     const new_values = values;
-    new_values['Created By'] = user.email
+    new_values["Created By"] = user.email;
     setLoading(true);
     doc.sheetsByIndex[1].addRows([new_values]).then((data) => {
       console.log("data...", data);
