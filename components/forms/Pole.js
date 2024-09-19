@@ -19,7 +19,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 const Pole = ({ isEditing = null }) => {
-  const { dataSheet, loadPoles, poles, doc } = useContext(DataContext);
+  const { dataSheet, loadPoles, poles, doc, user } = useContext(DataContext);
   const [values, setValues] = useState({});
   const params = useSearchParams();
   const router = useRouter();
@@ -403,6 +403,7 @@ const Pole = ({ isEditing = null }) => {
   const createNewPole = async (e) => {
     e.preventDefault();
     const new_values = values;
+    new_values['Created By'] = user.email
     setLoading(true);
     doc.sheetsByIndex[1].addRows([new_values]).then((data) => {
       console.log("data...", data);
