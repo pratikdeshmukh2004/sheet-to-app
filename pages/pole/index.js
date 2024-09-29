@@ -104,6 +104,7 @@ export default function Pole() {
             ?.map(
               (row) =>
                 row.get("District") == params.get("district") &&
+                row.get("Ward No") == params.get("ward") &&
                 row.get("ULB Name") == params.get("ulb") && (
                   <Link href={`/pole/detail?pole=${row._rowNumber}`}>
                     <li className="border p-3 hover:bg-gray-100 rounded-lg border-gray-300 py-3 flex items-center">
@@ -112,7 +113,7 @@ export default function Pole() {
                           {row.get("Pole Land Mark/ Location")}
                         </h4>
                         <p className="text-sm text-gray-500 font-medium ml-2">
-                          {row.get("Pole type")}
+                          {row.get("Ward No")}
                         </p>
                       </div>
                     </li>
