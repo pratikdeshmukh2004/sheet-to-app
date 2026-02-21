@@ -30,7 +30,8 @@ export default function Pole() {
     "Location Information": [
       "District",
       "ULB Name",
-      "Ward No",
+      "CCMS ID",
+      "CCMS ID",
       "Pole Land Mark/ Location",
       "Lattitude",
       "Longitude",
@@ -72,7 +73,7 @@ export default function Pole() {
       router.replace(
         `/pole?district=${row.get("District")}&ulb=${row.get(
           "ULB Name"
-        )}&ward=${row.get("Ward No")}`
+        )}&ward=${row.get("CCMS ID")}`
       );
     });
   };
@@ -120,9 +121,9 @@ export default function Pole() {
             className="hover:text-blue-500"
             href={`/pole?district=${row?.get("District")}&ulb=${row?.get(
               "ULB Name"
-            )}&ward=${row?.get("Ward No")}`}
+            )}&ward=${row?.get("CCMS ID")}`}
           >
-            {row.get("Ward No")}
+            {row.get("CCMS ID")}
           </Link>
           <FontAwesomeIcon
             className="text-[8px] text-gray-700 ml-2 mr-2 -mt-4"
@@ -135,7 +136,7 @@ export default function Pole() {
             className="bg-orange-600 py-2 text-md text-white font-bold rounded-lg px-3"
             href={`/pole?district=${row?.get("District")}&ulb=${row?.get(
               "ULB Name"
-            )}&ward=${row?.get("Ward No")}`}
+            )}&ward=${row?.get("CCMS ID")}`}
           >
             <button className="start-0">
               <FontAwesomeIcon className="mr-2" icon={faArrowLeft} />

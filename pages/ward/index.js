@@ -71,7 +71,7 @@ export default function Switch() {
           dataSheet
             ?.filter((row) =>
               row
-                .get("Ward No")
+                .get("CCMS ID")
                 ?.toLowerCase()
                 .includes(search.toLocaleLowerCase())
             )
@@ -81,11 +81,11 @@ export default function Switch() {
                   <Link
                     href={`/pole?district=${district}&ulb=${row.get(
                       "ULB NAME"
-                    )}&ward=${row.get("Ward No")}`}
+                    )}&ward=${row.get("CCMS ID")}`}
                   >
                     <li className="border-b hover:bg-gray-100 rounded-t-lg border-gray-300 py-3 flex items-center">
                       <div>
-                        <h4 className="ml-2">{row.get("Ward No")}</h4>
+                        <h4 className="ml-2">{row.get("CCMS ID")}</h4>
                         <p className="text-sm text-gray-500 font-medium ml-2">
                           {row.get("ULB NAME")}
                         </p>
