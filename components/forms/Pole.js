@@ -32,7 +32,7 @@ const Pole = ({ isEditing = null }) => {
     "ulb"
   )}&ward=${params.get("ward")}`;
   if (isEditing) {
-    backURL = `/pole?district=${values["District"]}&ulb=${values["ULB Name"]}&ward=${values["Ward No"]}`;
+    backURL = `/pole?district=${values["District"]}&ulb=${values["ULB Name"]}&ward=${values["CCMS ID"]}`;
   }
   const [form, setForm] = useState([
     {
@@ -61,16 +61,17 @@ const Pole = ({ isEditing = null }) => {
     },
     {
       type: "select",
-      label: "Ward No",
+      label: "CCMS ID",
       options: dataSheet
-        ?.filter(
-          (item) =>
-            item.get("ULB NAME") && item.get("ULB NAME") == values["ULB Name"]
-        )
+        ?.filter((item) => item.get("CCMS ID"))
         ?.map((item) => ({
-          label: item.get("Ward No"),
-          value: item.get("Ward No"),
+          label: item.get("CCMS ID"),
+          value: item.get("CCMS ID"),
         })),
+    },
+    {
+      type: "text",
+      label: "Ward No",
     },
     {
       type: "text",
@@ -411,7 +412,7 @@ const Pole = ({ isEditing = null }) => {
     } else {
       prefilled["District"] = params.get("district");
       prefilled["ULB Name"] = params.get("ulb");
-      prefilled["Ward No"] = params.get("ward");
+      prefilled["CCMS ID"] = params.get("ward");
     }
     setValues(prefilled);
   }, []);
@@ -430,15 +431,12 @@ const Pole = ({ isEditing = null }) => {
             label: item.get("ULB"),
             value: item.get("ULB"),
           }));
-      } else if (input.label === "Ward No") {
+      } else if (input.label === "CCMS ID") {
         input.options = dataSheet
-          ?.filter(
-            (item) =>
-              item.get("ULB NAME") && item.get("ULB NAME") == values["ULB Name"]
-          )
+          ?.filter((item) => item.get("CCMS ID"))
           ?.map((item) => ({
-            label: item.get("Ward No"),
-            value: item.get("Ward No"),
+            label: item.get("CCMS ID"),
+            value: item.get("CCMS ID"),
           }));
       }
     });
@@ -541,13 +539,13 @@ const Pole = ({ isEditing = null }) => {
                           return setValues({
                             ...values,
                             "ULB Name": null,
-                            "Ward No": null,
+                            "CCMS ID": null,
                             [item.label]: value.value,
                           });
                         } else if (item.label == "ULB Name") {
                           return setValues({
                             ...values,
-                            "Ward No": null,
+                            "CCMS ID": null,
                             [item.label]: value.value,
                           });
                         }
